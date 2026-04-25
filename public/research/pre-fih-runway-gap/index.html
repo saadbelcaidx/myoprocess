@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pre-FIH Runway Gap · myoProcess Research</title>
+<meta name="description" content="Why clinical-stage biotechs keep under-budgeting the walk from IND to Phase 1 readout — and the numbers a CFO should be modelling in 2026.">
+<meta name="author" content="Saad Belcaid · myoProcess">
+<link rel="canonical" href="https://myoprocess.com/research/pre-fih-runway-gap">
+<meta property="og:title" content="The Pre-FIH Runway Gap">
+<meta property="og:description" content="Why clinical-stage biotechs keep under-budgeting the walk from IND to Phase 1 readout — and the numbers a CFO should be modelling in 2026.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="myoProcess Research">
+<meta property="og:url" content="https://myoprocess.com/research/pre-fih-runway-gap">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Pre-FIH Runway Gap">
+<meta name="twitter:description" content="Why clinical-stage biotechs keep under-budgeting the walk from IND to Phase 1 readout.">
+<style>
+  :root {
+    --ink: #14161a;
+    --ink-soft: #2a2d33;
+    --sub: #5a5e66;
+    --rule: #d6d2c5;
+    --rule-soft: #ebe7d8;
+    --accent: #6b1818;
+    --bg: #fbfaf6;
+    --code-bg: #efeadb;
+    --kbd-bg: #f0ead8;
+    --tag: #6b6253;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: "Charter", "Iowan Old Style", "Apple Garamond", "Baskerville", "Georgia", "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  }
+
+  /* ── Header / brand bar ─────────────────────────────── */
+  .brandbar {
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .brandbar-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .wordmark {
+    font-family: "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .wordmark a { color: inherit; text-decoration: none; }
+  .brandbar-tag {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--tag);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-left: auto;
+  }
+
+  /* ── Article container ───────────────────────────────── */
+  article {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 28px 96px;
+  }
+
+  /* ── Headlines ───────────────────────────────────────── */
+  h1 {
+    font-size: 40px;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    letter-spacing: -0.018em;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .subtitle {
+    font-size: 19px;
+    color: var(--sub);
+    font-style: italic;
+    margin: 0 0 14px;
+    line-height: 1.45;
+  }
+  .byline {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--tag);
+    margin: 0 0 40px;
+    letter-spacing: 0.02em;
+  }
+  .byline a { color: var(--accent); text-decoration: none; }
+  .byline a:hover { text-decoration: underline; }
+
+  h2 {
+    font-size: 23px;
+    margin: 56px 0 14px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    letter-spacing: -0.005em;
+    font-weight: 600;
+  }
+  h3 { font-size: 18px; margin: 24px 0 8px; font-weight: 600; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 36px 0; }
+  p { margin: 0 0 16px; }
+  ul, ol { padding-left: 24px; margin: 0 0 18px; }
+  li { margin: 6px 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  em { font-style: italic; }
+  a { color: var(--accent); }
+
+  code {
+    font-family: "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
+    font-size: 15px;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-feature-settings: "tnum" 1;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 22px 0 26px;
+    font-size: 16px;
+  }
+  th, td {
+    border-bottom: 1px solid var(--rule);
+    padding: 11px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--kbd-bg);
+    font-weight: 600;
+    border-bottom: 2px solid var(--rule);
+    font-size: 14px;
+  }
+  td { font-feature-settings: "tnum" 1; }
+
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 20px 0;
+    padding: 4px 0 4px 20px;
+    color: var(--sub);
+    font-style: italic;
+  }
+
+  .tldr {
+    background: var(--kbd-bg);
+    padding: 22px 26px;
+    border-left: 3px solid var(--accent);
+    margin: 32px 0 40px;
+    border-radius: 2px;
+  }
+  .tldr h2 {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tldr ul { margin-bottom: 0; padding-left: 20px; }
+  .tldr li { line-height: 1.6; }
+
+  .scenario {
+    background: #f5f1e6;
+    padding: 20px 24px;
+    margin: 22px 0;
+    border-radius: 3px;
+    border-left: 2px solid var(--rule);
+  }
+  .scenario p strong { color: var(--ink); }
+
+  /* ── Sources ─────────────────────────────────────────── */
+  .sources {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--sub);
+    line-height: 1.6;
+  }
+  .sources strong { color: var(--ink); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── Footer / consultancy attribution ──────────────────── */
+  footer {
+    border-top: 1px solid var(--rule-soft);
+    background: var(--bg);
+  }
+  .foot-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--sub);
+    line-height: 1.5;
+  }
+  .foot-block { flex: 1 1 220px; }
+  .foot-block strong { display: block; color: var(--ink); margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .foot-block a { color: var(--accent); text-decoration: none; }
+  .foot-block a:hover { text-decoration: underline; }
+
+  /* ── Print ─────────────────────────────────────────────── */
+  @media print {
+    body { background: white; font-size: 11pt; }
+    .brandbar, footer { display: none; }
+    article { max-width: none; padding: 0.5in; }
+    .tldr, .scenario { background: #f5f1e6; }
+  }
+
+  @media (max-width: 640px) {
+    .brandbar-inner { padding: 14px 18px; }
+    .brandbar-tag { display: none; }
+    article { padding: 32px 18px 64px; }
+    h1 { font-size: 30px; }
+    .subtitle { font-size: 17px; }
+    table { font-size: 14px; }
+    th, td { padding: 8px 8px; }
+    .foot-inner { padding: 24px 18px; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header class="brandbar">
+  <div class="brandbar-inner">
+    <span class="wordmark"><a href="https://myoprocess.com">myoProcess</a></span>
+    <span class="brandbar-tag">Research · Issue 01</span>
+  </div>
+</header>
+
+<article>
+
+<h1>The Pre-FIH Runway Gap</h1>
+<p class="subtitle">Why clinical-stage biotechs keep under-budgeting the walk from IND to Phase 1 readout — and the numbers a CFO should be modelling in 2026.</p>
+<p class="byline">By Saad Belcaid · <a href="https://myoprocess.com">myoProcess</a> · April 2026</p>
+
+<div class="tldr">
+<h2>TL;DR</h2>
+<ul>
+<li><strong>The IND-to-Phase-1-readout walk costs more than most pre-IPO decks model.</strong> Tufts CSDD pegs median out-of-pocket Phase 1 cost at <strong>~$25.3M</strong> per program (DiMasi et al., <em>Journal of Health Economics</em> 2016; inflated to 2024 dollars ≈ <strong>$32–34M</strong>). Add IND-enabling GLP tox and CMC carry-over and the <em>pre-FIH-to-readout</em> envelope is routinely <strong>$40–55M</strong> for a single small-molecule or biologic asset.</li>
+<li><strong>Timeline slippage is the silent runway killer.</strong> BIO / Biomedtracker Phase 1 duration averages <strong>~2.0 years</strong> from FPI to primary completion. CFOs plan for 12–15 months. Every extra quarter at <strong>$3–5M/mo</strong> clinical-stage burn is <strong>$9–15M</strong> of unbudgeted cash.</li>
+<li><strong>Median clinical-stage biotech cash at Phase 1 entry is ~18–24 months of runway</strong>, below the <strong>24–30 months</strong> public investors now demand post-2022 (Stifel / Jefferies biotech quarterly reports, 2023–2024). The gap is a structural financing trigger, not a one-off.</li>
+<li><strong>CRO pass-throughs are now 35–55% of total trial cost</strong>, up from a historical ~30% — driven by site fees, central lab, and IRT (Medpace, ICON 10-Ks 2023). Direct service fees are no longer where the negotiation lives.</li>
+<li><strong>The sharpest CFOs run two runway models in parallel:</strong> a base case tied to protocol-defined FPI-to-readout, and a "slip case" adding 6 months + 20% pass-through overrun. If the slip case breaches 12 months at readout, the bridge needs to be live today.</li>
+</ul>
+</div>
+
+<h2>1. What the IND → Phase 1 readout actually costs</h2>
+
+<p>Published Phase 1 cost benchmarks sit in a surprisingly tight band once you normalize to 2024 dollars:</p>
+
+<table>
+<thead>
+<tr><th>Source</th><th>Phase 1 cost per program</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Tufts CSDD / DiMasi 2016 (JHE)</td><td>$25.3M (2013 $) → ~$33M (2024 $)</td><td>Industry survey, capitalized excluded</td></tr>
+<tr><td>JAMA Intern Med, Moore et al. 2018</td><td>$13.5M median (pivotal-adjacent Phase 1)</td><td>ClinicalTrials.gov + FDA data</td></tr>
+<tr><td>Deloitte "Measuring ROI in Pharma" 2023</td><td>~$28–40M Phase 1 loaded</td><td>Top-20 pharma; biotech typically 15–25% lower</td></tr>
+<tr><td>Evaluate Pharma / BioPharma Catalyst</td><td>$15–50M range by TA</td><td>Oncology and rare disease skew high</td></tr>
+</tbody>
+</table>
+
+<p><strong>The range matters more than the median.</strong> A 20-patient healthy-volunteer SAD/MAD small molecule in CNS runs ~$8–15M of direct trial spend. A 60–80 patient oncology Phase 1 with biomarker work, PK-rich sampling, and imaging runs $30–50M+. Therapeutic area drives nearly 3× variance in per-patient cost (Sertkaya et al., <em>Clin Trials</em> 2016: mean per-patient cost Phase 1 = <strong>$36,500</strong>; oncology &amp; cardiovascular 2–3× that).</p>
+
+<p><strong>Pre-FIH load adds $10–20M that CFOs routinely bury in "R&amp;D":</strong></p>
+<ul>
+<li>GLP tox (rodent + non-rodent): $4–8M</li>
+<li>CMC / GMP supply for FIH: $3–10M (biologics high end)</li>
+<li>Regulatory + IND prep: $1–3M</li>
+<li>Internal FTE carry through IND review: $2–5M</li>
+</ul>
+
+<p>Combined, the honest <em>IND-filing-to-Phase-1-readout</em> budget for a single clinical-stage asset is <strong>$40–55M</strong> for small molecules, <strong>$55–80M</strong> for biologics/cell therapy.</p>
+
+<h2>2. What the S-1s actually disclose (2023–2025 clinical-stage IPOs)</h2>
+
+<p>Pulled from SEC EDGAR S-1 / 424B4 filings and subsequent 10-Ks:</p>
+
+<table>
+<thead>
+<tr><th>Company (ticker)</th><th>IPO</th><th>Cash post-IPO</th><th>Stated runway</th><th>Lead asset stage at IPO</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Structure Therapeutics</strong> (GPCR)</td><td>Feb 2023</td><td>~$307M</td><td>Into 2026</td><td>Phase 1 GSBR-1290</td></tr>
+<tr><td><strong>Apogee Therapeutics</strong> (APGE)</td><td>Jul 2023</td><td>~$377M</td><td>Into 2027</td><td>Pre-IND / Phase 1 biologics</td></tr>
+<tr><td><strong>CARGO Therapeutics</strong> (CRGX)</td><td>Nov 2023</td><td>~$322M</td><td>Into 2026</td><td>Phase 2 (Phase 1 completed)</td></tr>
+<tr><td><strong>Kyverna Therapeutics</strong> (KYTX)</td><td>Feb 2024</td><td>~$366M</td><td>Into 2027</td><td>Phase 1/2 CAR-T</td></tr>
+<tr><td><strong>Alto Neuroscience</strong> (ANRO)</td><td>Feb 2024</td><td>~$249M</td><td>Into 2026</td><td>Phase 2b</td></tr>
+</tbody>
+</table>
+
+<p><strong>Two patterns jump out:</strong></p>
+<ol>
+<li><strong>Clinical-stage IPOs in 2023–24 raised materially more than 2020–21 cohorts</strong> because the window required 3+ years of runway past Phase 1 readout. Median post-IPO cash in this cohort is <strong>~$320M</strong>, vs. ~$180M for the 2020–21 window.</li>
+<li><strong>Use-of-proceeds allocations for "lead program through Phase 1/2 readouts" cluster at $120–200M</strong> — roughly <strong>2–4×</strong> the Tufts baseline. The delta is explicit buffer; CFOs and underwriters are pricing in the slip case.</li>
+</ol>
+
+<p><strong>What this tells a private CFO:</strong> if the public comp raised $300M+ with a Phase 1 asset, your Series C needs to underwrite <strong>~$150M minimum</strong> to credibly reach FIH data — assuming you want to IPO or strategic-exit from a position of strength rather than a financing corner.</p>
+
+<h2>3. Worked scenario — the $60M biotech</h2>
+
+<div class="scenario">
+<p><strong>Setup:</strong> Private clinical-stage biotech. Single lead asset. $60M cash at IND filing. Monthly burn currently <strong>$3.2M</strong> (25 FTEs, preclinical wind-down tail). Post-FIH burn expected to rise to <strong>$4.5M/mo</strong> (site activation, CRO ramp, CMC supply, added clinical ops FTEs).</p>
+
+<p><strong>Base case (protocol on time):</strong></p>
+<ul>
+<li>Month 0–3 (IND review → FPI): burn $3.2M × 3 = <strong>$9.6M</strong></li>
+<li>Month 3–18 (Phase 1 enrollment + follow-up): burn $4.5M × 15 = <strong>$67.5M</strong></li>
+<li>Month 18–21 (data lock, CSR, readout): burn $4.0M × 3 = <strong>$12.0M</strong></li>
+<li><strong>Total cash consumed: ~$89.1M</strong></li>
+<li><strong>Cash at readout: $60M − $89.1M = −$29.1M</strong> → financed via bridge or Series C at month ~13</li>
+</ul>
+
+<p><strong>Slip case (+6 months, +20% pass-through):</strong></p>
+<ul>
+<li>Add 6 months at $4.5M = <strong>$27M</strong></li>
+<li>Pass-through overrun on ~$30M of CRO spend at +20% = <strong>$6M</strong></li>
+<li><strong>Total: ~$122M consumed → gap of $62M</strong></li>
+</ul>
+</div>
+
+<p><strong>Implication:</strong> the "$60M at IND" founder-CEO narrative of "we're funded to readout" is structurally false at industry-norm timelines. The honest number is <strong>$90–125M</strong> to reach readout, which means a bridge or crossover round is <em>required</em>, not optional. The only question is whether the CFO triggers it at month 8 (from strength) or month 16 (from weakness).</p>
+
+<h2>4. Where the CRO math has shifted</h2>
+
+<ul>
+<li><strong>Pass-through % of total trial cost is rising.</strong> Medpace 2023 10-K: service revenue $1.89B, reimbursed costs $669M (~26% of reported). On biotech Phase 1 contracts specifically, pass-throughs are <strong>35–55%</strong> of total program cost. Site fees, central lab, IRT, and translational assays are the drivers.</li>
+<li><strong>CRO gross margins on biotech are ~25–30%</strong> (Medpace 2023: ~27% adjusted EBITDA margin; ICON segment disclosure consistent). A CFO negotiating direct service fees is fighting over the smaller half of the budget.</li>
+<li><strong>Milestone-tied payment structures are now negotiable</strong> where they weren't pre-2023. Medpace and ICON commentary on 2024 calls both flagged biotech customers pushing harder on milestone sequencing and cancellation protections as funding tightened.</li>
+</ul>
+
+<h2>What a sharp CFO pulls now</h2>
+
+<ol>
+<li><strong>Rebuild the IND-to-readout budget from CRO line items, not top-down benchmarks.</strong> Demand pass-through line-item detail from the CRO proposal — site fees, central lab, IRT, translational, monitoring. If pass-throughs are &lt;30% of total, the bid is under-scoped and you'll see change orders.</li>
+<li><strong>Model two runways in the board deck every quarter:</strong> base (protocol on time) and slip (+6 months, +20% pass-through). Report both. Investors are already running the slip case; showing you do too is credibility.</li>
+<li><strong>Tie 30–40% of CRO fees to milestones, not time elapsed.</strong> FPI, 50% enrolled, last patient in, database lock. This is now standard ask on Phase 1 contracts per 2023–24 CRO earnings commentary.</li>
+<li><strong>Trigger bridge conversations at the 18-month-of-runway mark, not 12.</strong> Crossover investors want 6+ months of diligence time; bankers want 9. The "12 months of cash" panic window is where you lose pricing leverage.</li>
+<li><strong>Benchmark your per-patient cost against Sertkaya et al. 2016 ($36.5K mean Phase 1, TA-adjusted).</strong> If your CRO bid is &gt;2× the TA-adjusted benchmark, you're paying for scope your protocol doesn't need — or the CRO is pricing in risk you haven't surfaced.</li>
+<li><strong>Separate CMC/supply spend from clinical trial spend in internal reporting.</strong> Different risk profiles, different financing instruments (venture debt often covers CMC; not clinical). Lumping them hides the real clinical burn.</li>
+<li><strong>Put a hard cap on pass-through overruns in the MSA.</strong> Standard CRO template allows uncapped change orders; a <strong>15% pass-through cap</strong> (with written re-approval above) is negotiable and saves $3–8M on a typical Phase 1.</li>
+</ol>
+
+<div class="sources">
+<p><strong>Sources referenced</strong><br>
+Tufts Center for the Study of Drug Development (DiMasi et al. 2016, <em>Journal of Health Economics</em>; Tufts Impact Reports 2022–2023); JAMA Internal Medicine (Moore et al. 2018); Sertkaya et al., <em>Clinical Trials</em> 2016; BIO / Biomedtracker Clinical Development Success Rates 2011–2020; SEC EDGAR S-1, 424B4, and 10-K filings for Structure Therapeutics, Apogee Therapeutics, CARGO Therapeutics, Kyverna Therapeutics, Alto Neuroscience (2023–2024); Medpace 2023 10-K; ICON plc 2023 Annual Report; Deloitte "Measuring the Return from Pharmaceutical Innovation" 2023; Stifel and Jefferies biotech IPO trackers 2023–2024; Evaluate Pharma industry benchmarks 2023.</p>
+</div>
+
+</article>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-block">
+      <strong>About myoProcess</strong>
+      We work with clinical-stage biotechs and operators on the finance side of clinical execution — runway models, CRO contract discipline, milestone budgeting, and pre-readout investor positioning.
+    </div>
+    <div class="foot-block">
+      <strong>Recent work</strong>
+      Hippocratic AI · 2 partners signed in 60 days<br>
+      Connect Group · $105K added in 90 days<br>
+      Crawford Thomas · $100K in 6 months
+    </div>
+    <div class="foot-block">
+      <strong>Get in touch</strong>
+      <a href="mailto:saad@myoprocess.com">saad@myoprocess.com</a><br>
+      <a href="https://myoprocess.com">myoprocess.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
