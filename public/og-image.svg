@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .ink { fill: #14161a; }
+      .sub { fill: #5a5e66; }
+      .tag { fill: #6b6253; }
+      .accent { fill: #6b1818; }
+      .rule { stroke: #d6d2c5; stroke-width: 1; }
+      .rule-soft { stroke: #ebe7d8; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="630"/>
+
+  <!-- Top wordmark + tag -->
+  <text x="80" y="80"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
+        font-size="20"
+        font-weight="700"
+        class="ink">myoProcess</text>
+  <text x="1120" y="80"
+        text-anchor="end"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
+        font-size="14"
+        letter-spacing="2"
+        class="tag">SAAD BELCAID — RESEARCH &amp; INTRODUCTIONS</text>
+
+  <line class="rule-soft" x1="80" y1="108" x2="1120" y2="108"/>
+
+  <!-- Eyebrow tag -->
+  <text x="80" y="190"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
+        font-size="16"
+        letter-spacing="2.4"
+        class="tag">TRUSTED IN OVER $1B OF B2B TRANSACTIONS · 2023–2025</text>
+
+  <!-- Headline -->
+  <text x="80" y="280"
+        font-family="Charter, 'Iowan Old Style', 'Baskerville', Georgia, serif"
+        font-size="58"
+        font-weight="600"
+        class="ink">Saad Belcaid routes capital,</text>
+  <text x="80" y="350"
+        font-family="Charter, 'Iowan Old Style', 'Baskerville', Georgia, serif"
+        font-size="58"
+        font-weight="600"
+        class="ink">talent, and dealflow between</text>
+  <text x="80" y="420"
+        font-family="Charter, 'Iowan Old Style', 'Baskerville', Georgia, serif"
+        font-size="58"
+        font-weight="600"
+        class="ink">operators who need to find</text>
+  <text x="80" y="490"
+        font-family="Charter, 'Iowan Old Style', 'Baskerville', Georgia, serif"
+        font-size="58"
+        font-weight="600"
+        class="ink">each other.</text>
+
+  <!-- Bottom proof strip -->
+  <line class="rule" x1="80" y1="555" x2="1120" y2="555"/>
+  <text x="80" y="590"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
+        font-size="14"
+        letter-spacing="2.4"
+        class="tag">PRIVATE EQUITY · WEALTH · BANKING · AI · HEALTHCARE · RECRUITMENT</text>
+  <text x="1120" y="590"
+        text-anchor="end"
+        font-family="'JetBrains Mono', 'SF Mono', Menlo, monospace"
+        font-size="14"
+        letter-spacing="2"
+        class="accent">myoprocess.com</text>
+</svg>
