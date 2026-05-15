@@ -133,6 +133,53 @@ main {
   border-bottom-color: var(--ink);
 }
 
+/* ── Live operator metrics (under hero) ──────────────── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  padding: 28px 0 4px;
+  margin: 32px 0 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.metric-value {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-feature-settings: "tnum" 1;
+  line-height: 1.1;
+}
+.metric-unit {
+  font-size: 14px;
+  color: var(--sub);
+  font-weight: 400;
+  margin-left: 1px;
+}
+.metric-qualifier {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+.metric-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--tag);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+}
+
 /* ── Section rules ─────────────────────────────────────── */
 .divider {
   border: 0;
@@ -207,11 +254,22 @@ main {
   flex: 0 0 16px;
 }
 
+.signals-source {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--sub);
+  margin-top: 20px;
+  letter-spacing: -0.002em;
+  line-height: 1.5;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+}
 .signals-foot {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--tag);
-  margin-top: 18px;
+  margin-top: 12px;
   letter-spacing: 0.02em;
 }
 .signals-foot a {
@@ -335,6 +393,10 @@ main {
   .hero h1 { font-size: 28px; }
   .hero .subline { font-size: 13px; }
   .hero .proof-strip { font-size: 10px; letter-spacing: 0.12em; }
+  .metrics { grid-template-columns: 1fr; gap: 22px; padding: 22px 0 2px; margin-top: 24px; }
+  .metric-value { font-size: 22px; }
+  .metric-label { font-size: 9.5px; letter-spacing: 0.12em; }
+  .signals-source { font-size: 12px; }
   .foot { flex-wrap: wrap; gap: 8px 16px; }
   .foot .geo { width: 100%; }
   .row-list .row { gap: 12px; flex-wrap: wrap; }

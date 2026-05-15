@@ -11,7 +11,7 @@ function App() {
       <main>
         {/* ── Hero ─────────────────────────────────────────── */}
         <section className="hero">
-          <p className="tagline">Trusted in over $1B of B2B transactions, 2023–2025</p>
+          <p className="tagline">$1B+ in B2B pipeline routed across 6 sectors · 2023–2025</p>
           <h1>
             Saad Belcaid routes capital, talent, and dealflow between operators who need to find each other.
           </h1>
@@ -24,6 +24,22 @@ function App() {
           <p className="memo-link">
             <a href="/memo">Read memorandum →</a>
           </p>
+        </section>
+
+        {/* ── Live operator metrics ────────────────────────── */}
+        <section className="metrics">
+          <div className="metric">
+            <div className="metric-value">$1B+</div>
+            <div className="metric-label">pipeline routed · 2023–2025</div>
+          </div>
+          <div className="metric">
+            <div className="metric-value">500<span className="metric-unit">/day</span></div>
+            <div className="metric-label">verified leads dispatching · across 6 sectors</div>
+          </div>
+          <div className="metric">
+            <div className="metric-value">8 <span className="metric-qualifier">selective</span></div>
+            <div className="metric-label">operator mandates · currently active</div>
+          </div>
         </section>
 
         <hr className="divider" />
@@ -52,6 +68,9 @@ function App() {
               <span className="value">FDA remediation windows opened this week</span>
             </div>
           </div>
+          <p className="signals-source">
+            Sourced from SEC EDGAR, FDA warning letters, IPO calendar, and proprietary B2B signal feeds.
+          </p>
           <p className="signals-foot">
             Updated 25 April 2026 ·{" "}
             <a href="mailto:saad@myoprocess.com">saad@myoprocess.com</a>{" "}
