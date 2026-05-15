@@ -132,6 +132,19 @@ main {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
+.hero .memo-link-sep {
+  margin: 0 12px;
+  color: var(--rule);
+  font-family: var(--mono);
+}
+.hero .cta-consult {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.hero .cta-consult:hover {
+  color: var(--accent-soft);
+  border-bottom-color: var(--accent-soft);
+}
 
 /* ── Live operator metrics (under hero) ──────────────── */
 .metrics {
@@ -335,8 +348,27 @@ main {
   font-size: 19px;
   font-style: italic;
   color: var(--ink);
-  margin: 32px 0 24px;
+  margin: 32px 0 16px;
   letter-spacing: -0.005em;
+}
+
+.engagement-cta {
+  margin: 0 0 28px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.engagement-cta a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+.engagement-cta a:hover {
+  color: var(--accent-soft);
+  border-bottom-color: var(--accent-soft);
 }
 
 /* ── Direct contact ────────────────────────────────────── */
@@ -397,6 +429,9 @@ main {
   .metric-value { font-size: 22px; }
   .metric-label { font-size: 9.5px; letter-spacing: 0.12em; }
   .signals-source { font-size: 12px; }
+  .hero .memo-link { line-height: 2; }
+  .hero .memo-link-sep { display: none; }
+  .hero .memo-link a { display: inline-block; margin-right: 18px; }
   .foot { flex-wrap: wrap; gap: 8px 16px; }
   .foot .geo { width: 100%; }
   .row-list .row { gap: 12px; flex-wrap: wrap; }

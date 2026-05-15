@@ -23,6 +23,15 @@ function App() {
           </p>
           <p className="memo-link">
             <a href="/memo">Read memorandum →</a>
+            <span className="memo-link-sep">·</span>
+            <a
+              href="https://cal.com/saadmyoprocess/private-consultation?overlayCalendar=true"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="cta-consult"
+            >
+              Book private consultation →
+            </a>
           </p>
         </section>
 
@@ -159,6 +168,15 @@ function App() {
         {/* ── Engagement ───────────────────────────────────── */}
         <section className="section">
           <p className="engagement">Currently accepting 2 new counterparties this quarter.</p>
+          <p className="engagement-cta">
+            <a
+              href="https://cal.com/saadmyoprocess/private-consultation?overlayCalendar=true"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Book private consultation →
+            </a>
+          </p>
           <div className="contact">
             <a href="mailto:saad@myoprocess.com">saad@myoprocess.com</a>
             <a href="https://linkedin.com/in/saadbelcaid" target="_blank" rel="noreferrer noopener">
