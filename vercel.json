@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/private-help", "destination": "/index.html" }
+  ]
+}

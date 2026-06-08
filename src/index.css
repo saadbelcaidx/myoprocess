@@ -371,6 +371,44 @@ main {
   border-bottom-color: var(--accent-soft);
 }
 
+/* ── Private rebuild — note body + DM button ───────────── */
+.note {
+  margin: 0 0 4px;
+}
+.note p {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 20px;
+  max-width: 620px;
+}
+.note p:last-child { margin-bottom: 0; }
+
+.note-cta {
+  font-size: 17px;
+  color: var(--sub);
+  margin: 0 0 24px;
+  max-width: 620px;
+}
+
+.dm-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 12px 22px;
+  transition: background 200ms ease, color 200ms ease;
+}
+.dm-button:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
 /* ── Direct contact ────────────────────────────────────── */
 .contact {
   display: flex;
@@ -441,6 +479,9 @@ main {
   .research-row { flex-wrap: wrap; }
   .research-row .date { width: 100%; margin-left: 0; margin-top: 2px; }
   .divider { margin: 40px 0; }
+  .note p { font-size: 17px; }
+  .note-cta { font-size: 15px; }
+  .dm-button { font-size: 12px; padding: 11px 18px; }
 }
 
 /* ── Selection ─────────────────────────────────────────── */
