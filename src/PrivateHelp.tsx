@@ -33,26 +33,24 @@ export default function PrivateHelp() {
             them get to the income they're actually after, a lot faster than
             they'd get there alone.
           </p>
-          <p>
-            That's really the whole thing. I compress the time. Instead of
-            guessing for months about your niche, your offer, your copy, what's
-            actually broken, you borrow the version of me that already walked it.
-          </p>
-          <p>
-            It's not a course, and it's not a call you book. It's me working
-            with you directly until you're actually moving.
-          </p>
         </div>
 
         <hr className="divider" />
 
         <section className="section">
+          <div className="note">
+            <p>
+              You already know the system. This is for the people who are in it
+              but want someone to tell them exactly what to fix and what to do
+              next.
+            </p>
+          </div>
           <p className="engagement">
             5 spots. That's all the time I have for it right now.
           </p>
           <p className="note-cta">
-            If you want one, message me and we'll figure out if it's a fit.
-            That's the only step.
+            If that's you, message me. Tell me where you're at and what you're
+            trying to get to. We'll take it from there.
           </p>
           <a
             href="https://www.skool.com/ssmasters"
