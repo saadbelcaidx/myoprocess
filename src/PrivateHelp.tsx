@@ -17,8 +17,8 @@ export default function PrivateHelp() {
 
       <main>
         <section className="hero">
-          <p className="tagline">Private · 5 spots</p>
-          <h1>I'm taking on 5 people directly.</h1>
+          <p className="tagline">Private · 4 spots</p>
+          <h1>I'm taking on 4 people directly.</h1>
         </section>
 
         <div className="note">
@@ -46,7 +46,7 @@ export default function PrivateHelp() {
             </p>
           </div>
           <p className="engagement">
-            5 spots. That's all the time I have for it right now.
+            4 spots. That's all the time I have for it right now.
           </p>
           <p className="note-cta">
             If that's you, message me. Tell me where you're at and what you're
