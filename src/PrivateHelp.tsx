@@ -53,7 +53,7 @@ export default function PrivateHelp() {
             trying to get to. We'll take it from there.
           </p>
           <a
-            href="https://www.skool.com/ssmasters"
+            href="/go-skool"
             target="_blank"
             rel="noreferrer noopener"
             className="dm-button"
