@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/private-help", "destination": "/index.html" },
-    { "source": "/go-skool", "destination": "/index.html" }
+    { "source": "/private-help", "destination": "/app.html" },
+    { "source": "/go-skool", "destination": "/app.html" }
   ]
 }
