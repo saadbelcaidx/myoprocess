@@ -227,7 +227,7 @@ const tail = `
 
 <footer>
   <div class="wrap">
-    <div>myoProcess · Saad Belcaid · Cyprus · New York · Remote</div>
+    <div>myoProcess · Saad · Cyprus · New York · Remote</div>
     <nav>
       <a href="/memo">Memorandum</a>
       <a href="/research/pre-fih-runway-gap">Research</a>
