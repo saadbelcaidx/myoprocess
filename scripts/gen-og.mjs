@@ -62,7 +62,7 @@ const home = shell(`${top}
 <div class="strip">
   <div><b>$17,000,000</b><span>in business opportunities generated</span></div>
   <div><b>$1 billion+</b><span>in B2B pipeline routed</span></div>
-  <div><b>17</b><span>client results</span></div>
+  <div><b>16</b><span>client results</span></div>
   <div><b>13</b><span>industries</span></div>
 </div>`);
 
