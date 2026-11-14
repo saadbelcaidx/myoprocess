@@ -407,7 +407,7 @@ async function settle(piId) {
 }
 
 async function load() {
-  if (!/^[a-z0-9]{12}$/.test(slug)) return stateScreen("This link is not valid.", "Check the link you were sent, or email saad@myoprocess.com.");
+  if (!/^[a-z0-9][a-z0-9-]{10,62}[a-z0-9]$/.test(slug)) return stateScreen("This link is not valid.", "Check the link you were sent, or email saad@myoprocess.com.");
   let r, j;
   try { r = await fetch(`${API}?op=view&slug=${encodeURIComponent(slug)}`, { headers: headers() }); j = await r.json(); }
   catch { return stateScreen("This page could not load.", "Check your connection and refresh. If it keeps happening, email saad@myoprocess.com."); }
