@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Proposals · myoProcess Access</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf9f5; --paper-2: #ffffff;
+    --ink: #121212; --ink-2: #3a3a3a; --sub: #6c6a64; --mute: #9a978f;
+    --rule: #dedad0; --rule-2: #ece9e0;
+    --ox: #6b1818; --ox-2: #8a1f1f; --ox-soft: rgba(107,24,24,.08);
+    --ok: #1f5f3a; --warn: #b7791f;
+    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --tight: "Inter Tight", "Inter", -apple-system, sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    --gutter: 32px; --max: 1320px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: var(--sans); font-size: 15px; line-height: 1.55; color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  button { font-family: var(--sans); }
+  [hidden] { display: none !important; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--sub); }
+
+  .mast { border-bottom: 1px solid var(--rule); background: var(--paper); position: sticky; top: 0; z-index: 20; }
+  .mast .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .wordmark { font-family: var(--tight); font-weight: 600; font-size: 17px; letter-spacing: -.01em; text-decoration: none; }
+  .wordmark em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--ox); font-size: 20px; margin-right: 1px; }
+  .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ox); border: 1px solid rgba(107,24,24,.3); border-radius: 999px; padding: 3px 9px; }
+  .mast-right { display: flex; gap: 14px; align-items: center; font-size: 14px; color: var(--sub); }
+  .linkbtn { background: none; border: 0; color: var(--sub); font: 500 13px var(--sans); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+
+  .gate { min-height: 70vh; display: grid; place-items: center; }
+  .gate form { width: min(380px, 100%); background: var(--paper-2); border: 1px solid var(--rule); padding: 26px; }
+  .gate h1 { font-family: var(--serif); font-weight: 400; font-size: 34px; margin: 0 0 6px; }
+  .gate p { margin: 0 0 16px; color: var(--sub); font-size: 14px; }
+
+  .head { padding: 40px 0 24px; display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .head h1 { font-family: var(--serif); font-weight: 400; font-size: 46px; line-height: 1; margin: 0; letter-spacing: -.012em; }
+  .head h1 i { font-style: italic; color: var(--ox); }
+
+  .grid { display: grid; grid-template-columns: 400px 1fr; gap: 24px; align-items: start; }
+  .panel { background: var(--paper-2); border: 1px solid var(--rule); padding: 22px; position: sticky; top: 76px; max-height: calc(100vh - 92px); overflow: auto; }
+  .fld { margin-bottom: 16px; }
+  .fld > label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+  .hint { font-size: 12.5px; color: var(--sub); margin-top: 6px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 8px; padding: 3px; background: var(--paper); gap: 3px; }
+  .seg button { border: 0; background: transparent; border-radius: 6px; padding: 9px 8px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); cursor: pointer; line-height: 1.25; }
+  .seg button[aria-pressed="true"] { background: var(--paper-2); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 0 0 1px var(--rule); }
+  .seg button:disabled { cursor: not-allowed; opacity: .6; }
+  .seg button small { display: block; font-size: 11.5px; color: var(--sub); font-weight: 400; margin-top: 2px; }
+  input.t, textarea.t { width: 100%; font: 400 15px var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; }
+  textarea.t { min-height: 150px; resize: vertical; line-height: 1.5; font-size: 14px; }
+  input.t:focus, textarea.t:focus { outline: none; border-color: var(--ox); box-shadow: 0 0 0 3px rgba(107,24,24,.12); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .price-in { position: relative; }
+  .price-in span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--sub); font-size: 15px; }
+  .price-in input { padding-left: 24px; font-family: var(--tight); font-weight: 600; font-size: 17px; font-variant-numeric: tabular-nums; }
+
+  .btn { width: 100%; font: 600 15px var(--sans); border-radius: 6px; padding: 12px 16px; cursor: pointer; transition: background .15s, opacity .15s; border: 1px solid transparent; text-align: center; text-decoration: none; display: block; }
+  .btn-ox { color: #fff; background: var(--ox); }
+  .btn-ox:hover:not(:disabled) { background: var(--ox-2); }
+  .btn-line { color: var(--ink); background: var(--paper-2); border-color: var(--rule); }
+  .btn-line:hover:not(:disabled) { border-color: var(--ink-2); }
+  .btn-ink { color: #fff; background: var(--ink); }
+  .btn:disabled, .btn[aria-disabled="true"] { opacity: .4; cursor: not-allowed; pointer-events: none; }
+  .btn .spark { display: inline-block; margin-right: 6px; }
+  .btn.busy { position: relative; overflow: hidden; }
+  .btn.busy::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent); animation: sweep 1s linear infinite; }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  .acts { border-top: 1px solid var(--rule-2); margin-top: 20px; padding-top: 18px; display: grid; gap: 10px; }
+  .msg { font-size: 12.5px; color: var(--ox); min-height: 18px; }
+  .msg.ok { color: var(--ok); }
+  .made { border: 1px solid var(--rule); border-left: 3px solid var(--ok); background: var(--paper); padding: 14px; }
+  .made b { font-size: 13px; color: var(--ok); display: block; margin-bottom: 8px; }
+  .link-row { display: flex; gap: 8px; align-items: center; }
+  .link-row code { flex: 1; min-width: 0; font-family: var(--mono); font-size: 12.5px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 6px; padding: 9px 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .link-row button { flex: none; width: auto; padding: 9px 14px; font-size: 13px; }
+  .made p { margin: 8px 0 0; font-size: 12.5px; color: var(--sub); }
+  .locked { border: 1px solid var(--rule); border-left: 3px solid var(--ok); background: var(--paper); padding: 12px 14px; font-size: 13px; color: var(--ink-2); }
+
+  .doc-wrap { border: 1px solid var(--rule); background: var(--paper); }
+  .doc-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--rule); background: var(--paper-2); flex-wrap: wrap; }
+  .doc-bar .eyebrow { color: var(--ink-2); }
+  .doc-bar span.h { font-size: 12.5px; color: var(--sub); }
+  .doc { padding: 40px 44px 48px; min-height: 640px; }
+  .empty { height: 560px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--sub); gap: 10px; }
+  .empty b { font-family: var(--serif); font-weight: 400; font-size: 30px; color: var(--ink); }
+  .empty p { margin: 0; max-width: 38ch; }
+  .d-for { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ox); margin: 0 0 14px; }
+  .d-h1 { font-family: var(--serif); font-weight: 400; font-size: 54px; line-height: 1; margin: 0 0 14px; letter-spacing: -.015em; }
+  .d-h1 i { font-style: italic; color: var(--ox); }
+  .d-what { font-size: 18px; color: var(--ink-2); margin: 0 0 14px; max-width: 44ch; }
+  .d-pow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+  .d-pow i { width: 6px; height: 6px; border-radius: 50%; background: var(--ox); display: inline-block; box-shadow: 0 0 0 3px rgba(107,24,24,.12); }
+  .d-meta { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 30px 0 6px; }
+  .d-meta > div { padding: 12px 14px 12px 0; font-size: 13px; min-width: 0; }
+  .d-meta > div + div { border-left: 1px solid var(--rule); padding-left: 14px; }
+  .d-meta > div > span { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--sub); margin-bottom: 3px; }
+  .d-meta b { font-weight: 500; }
+  .d-meta .mprice b { font-family: var(--tight); font-weight: 600; font-size: 18px; }
+  .d-sec { display: grid; grid-template-columns: 170px 1fr; gap: 28px; padding: 30px 0; border-bottom: 1px solid var(--rule); }
+  .d-sec:last-of-type { border-bottom: 0; }
+  .d-sec > div:first-child small { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--ox); margin-bottom: 8px; }
+  .d-sec h2 { font-family: var(--serif); font-weight: 400; font-size: 25px; line-height: 1.05; margin: 0; }
+  .d-sec p, .d-sec li { color: var(--ink-2); font-size: 14.5px; }
+  .d-sec p { margin: 0 0 10px; }
+  .d-sec ul, .d-sec ol { margin: 0 0 10px; padding-left: 20px; }
+  .d-sec li { margin-bottom: 4px; }
+  .d-sec .lead { font-size: 16px; color: var(--ink); }
+  .d-sec .note { font-size: 13px; color: var(--sub); }
+  .d-sec h3 { font-family: var(--tight); font-size: 14px; margin: 14px 0 6px; }
+  .d-confirmed { background: var(--paper-2); border: 1px solid var(--rule); border-left: 2px solid var(--ox); padding: 12px 14px 4px; margin-bottom: 10px; }
+  .d-confirmed > span { font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ox); }
+  .d-cards { display: grid; gap: 10px; margin-bottom: 10px; }
+  .d-card { background: var(--paper-2); border: 1px solid var(--rule); border-top: 2px solid var(--ox); padding: 12px 14px; }
+  .d-card h4 { margin: 0 0 4px; font-family: var(--tight); font-size: 14px; }
+  .d-card p { margin: 0; font-size: 13.5px; }
+  .d-inv { display: flex; justify-content: space-between; align-items: baseline; border: 1px solid var(--rule); background: var(--paper-2); padding: 14px 16px; margin-bottom: 10px; font-size: 14.5px; }
+  .d-inv b { font-family: var(--tight); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .d-sign { margin-top: 26px; border: 1px dashed var(--rule); padding: 18px; text-align: center; font-size: 13.5px; color: var(--sub); }
+  [contenteditable="true"] { border-radius: 4px; outline: 1px dashed transparent; outline-offset: 4px; transition: outline-color .15s, background .15s; cursor: text; }
+  [contenteditable="true"]:hover { outline-color: rgba(107,24,24,.35); }
+  [contenteditable="true"]:focus { outline: 1px solid var(--ox); background: var(--ox-soft); }
+  .tok { background: rgba(107,24,24,.07); color: var(--ox); border-radius: 3px; padding: 0 3px; font-weight: 500; white-space: nowrap; }
+  .ph { background: #fde8e8; color: #8a1f1f; border-radius: 3px; padding: 0 3px; font-weight: 600; }
+
+  .list { margin: 48px 0 80px; }
+  .list-h { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 16px; }
+  .list h2 { font-family: var(--serif); font-weight: 400; font-size: 34px; margin: 0; }
+  .tbl { border: 1px solid var(--rule); background: var(--paper-2); }
+  .row { display: grid; grid-template-columns: 1.3fr 1.1fr 160px 1.4fr 230px; gap: 16px; align-items: center; padding: 14px 18px; font-size: 14px; }
+  .row + .row { border-top: 1px solid var(--rule-2); }
+  .row.hd { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--sub); background: var(--paper); padding-top: 10px; padding-bottom: 10px; }
+  .row .co b { font-weight: 600; display: block; }
+  .row .co small { color: var(--sub); font-size: 12.5px; }
+  .st { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; }
+  .st i { width: 7px; height: 7px; border-radius: 50%; background: var(--mute); display: inline-block; flex: none; }
+  .st.paid i { background: var(--ok); } .st.opened i { background: var(--warn); } .st.void i { background: var(--rule); }
+  .st small { color: var(--sub); display: block; }
+  .pr { display: flex; align-items: center; gap: 6px; }
+  .pr input { width: 110px; font: 600 14px var(--tight); font-variant-numeric: tabular-nums; border: 1px solid var(--rule); border-radius: 6px; padding: 7px 9px; background: var(--paper); }
+  .pr input:focus { outline: none; border-color: var(--ox); }
+  .pr b { font-family: var(--tight); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .rowact { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+  .mini { font: 500 12.5px var(--sans); border: 1px solid var(--rule); background: var(--paper-2); border-radius: 6px; padding: 6px 10px; cursor: pointer; text-decoration: none; color: var(--ink); }
+  .mini:hover { border-color: var(--ink-2); }
+  .mini.ok { color: var(--ok); border-color: rgba(31,95,58,.35); }
+  .mini.danger { color: var(--ox); }
+  .rowfresh { animation: flash 1.6s ease-out; }
+  @keyframes flash { from { background: rgba(31,95,58,.12); } to { background: transparent; } }
+  .muted { color: var(--sub); font-size: 13.5px; padding: 18px; }
+
+  @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } .panel { position: static; max-height: none; } }
+  @media (max-width: 760px) {
+    :root { --gutter: 16px; }
+    .head h1 { font-size: 38px; }
+    .doc { padding: 26px 18px 32px; }
+    .d-h1 { font-size: 40px; }
+    .d-meta { grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
+    .d-meta > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .d-meta > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .d-sec { grid-template-columns: 1fr; gap: 12px; }
+    .row { grid-template-columns: 1fr 1fr; gap: 8px 12px; }
+    .row.hd { display: none; }
+    .rowact { justify-content: flex-start; grid-column: 1 / -1; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .motion .head h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding: .06em .02em 0 0; margin: -.06em -.02em 0 0; }
+    .motion .head h1 .w > span { display: inline-block; transform: translateY(112%); animation: rise .9s cubic-bezier(.2,.75,.15,1) forwards; animation-delay: calc(120ms + var(--i) * 55ms); }
+    .motion .head h1 i .w > span { background: linear-gradient(90deg, var(--ox) 50%, var(--ink) 50%); background-size: 200% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rise .9s cubic-bezier(.2,.75,.15,1) forwards, ink 1.1s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(120ms + var(--i) * 55ms), calc(520ms + var(--i) * 55ms); }
+    .motion .head .eyebrow, .motion .grid > * { opacity: 0; transform: translateY(16px); animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .motion .head .eyebrow { animation-delay: .45s; }
+    .motion .grid > :nth-child(1) { animation-delay: .6s; }
+    .motion .grid > :nth-child(2) { animation-delay: .75s; }
+    .motion .mast .wrap > * { opacity: 0; animation: fadeUp .7s ease forwards; }
+    .motion .mast .wrap > :nth-child(2) { animation-delay: .1s; }
+    @keyframes rise { to { transform: none; } }
+    @keyframes ink { to { background-position: 0 0; } }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .mast { transition: background .3s, box-shadow .3s; }
+    .mast.scrolled { background: rgba(250,249,245,.72); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+    .mast::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: var(--progress, 0%); background: var(--ox); transition: width .12s linear; }
+    .mag { will-change: transform; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+    .motion .doc.drafted > * { opacity: 0; transform: translateY(14px); animation: fadeUp .7s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--k, 0) * 90ms); }
+    .cursor { display: none; }
+    @media (hover: hover) and (pointer: fine) {
+      .cursor { display: block; position: fixed; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--ox); pointer-events: none; z-index: 1000; opacity: 0; transform: translate(-50%, -50%); transition: width .28s cubic-bezier(.2,.7,.2,1), height .28s cubic-bezier(.2,.7,.2,1), background .28s, opacity .3s, border-color .28s; }
+      body.cursor-on .cursor { opacity: 1; }
+      .cursor.is-hover { width: 46px; height: 46px; background: rgba(107,24,24,.07); border-color: rgba(107,24,24,.45); }
+      .cursor.is-down { width: 30px; height: 30px; background: rgba(107,24,24,.16); }
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="brand"><a href="https://www.myoprocess.com" class="wordmark"><em>m</em>yoProcess</a><span class="tag">Access · private</span></div>
+    <div class="mast-right"><span>Saad</span><button type="button" class="linkbtn" id="lock" hidden>Lock</button></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="gate" id="gate" hidden>
+    <form id="gateForm">
+      <h1>Proposals</h1>
+      <p>Enter your access key. It stays on this computer.</p>
+      <input class="t" id="key" type="password" autocomplete="current-password" placeholder="Access key">
+      <div class="msg" id="gateMsg"></div>
+      <button class="btn btn-ox" type="submit">Unlock</button>
+    </form>
+  </section>
+
+  <div id="appView" hidden>
+    <div class="head">
+      <h1 id="title">New <i>proposal</i></h1>
+      <span class="eyebrow">myoprocess.com/access/new</span>
+    </div>
+
+    <div class="grid">
+      <form class="panel" id="form" onsubmit="return false">
+        <div class="fld">
+          <label>Offer</label>
+          <div class="seg" id="offer">
+            <button type="button" data-o="market_entry" aria-pressed="true">Market Entry<small>One buyer</small></button>
+            <button type="button" data-o="continuous_access" aria-pressed="false">Continuous Access Program<small>Six introductions</small></button>
+          </div>
+        </div>
+        <div class="two">
+          <div class="fld"><label for="co">Company</label><input class="t" id="co" autocomplete="off"></div>
+          <div class="fld"><label for="pr">Price (USD)</label><div class="price-in"><span>$</span><input class="t" id="pr" inputmode="decimal" autocomplete="off"></div></div>
+        </div>
+        <div class="two">
+          <div class="fld"><label for="ct">Contact</label><input class="t" id="ct" autocomplete="off"></div>
+          <div class="fld"><label for="rl">Their title</label><input class="t" id="rl" autocomplete="off"></div>
+        </div>
+        <div class="fld">
+          <label for="cv">Conversation</label>
+          <textarea class="t" id="cv" placeholder="Paste the whole email or WhatsApp thread here, with the buyer's reply."></textarea>
+          <div class="hint">Drafting reads the thread and writes the opportunity and what they receive, with the buyer kept anonymous. Your terms and guarantee are added word for word. The thread is never shown to the customer.</div>
+        </div>
+        <button type="button" class="btn btn-ink" id="draft"><span class="spark">✦</span>Draft with AI</button>
+
+        <div class="acts">
+          <div class="locked" id="lockedNote" hidden></div>
+          <div class="msg" id="msg"></div>
+          <a class="btn btn-line" id="see" target="_blank" rel="noopener" aria-disabled="true">Preview as customer</a>
+          <button type="button" class="btn btn-ox" id="make" disabled>Create link</button>
+          <div class="made" id="made" hidden>
+            <b id="madeTitle">✓ Link created. You've signed it.</b>
+            <div class="link-row"><code id="url"></code><button type="button" class="btn btn-line" id="copy">Copy</button></div>
+            <p id="madeLine"></p>
+          </div>
+          <button type="button" class="linkbtn" id="reset" hidden>Start a new proposal</button>
+        </div>
+      </form>
+
+      <section class="doc-wrap" aria-label="What the customer sees">
+        <div class="doc-bar"><span class="eyebrow">What the customer sees</span><span class="h">Click any paragraph to edit it</span></div>
+        <div class="doc" id="doc"><div class="empty"><b>Nothing drafted yet</b><p>Paste the conversation and click Draft with AI. The proposal appears here.</p></div></div>
+      </section>
+    </div>
+
+    <section class="list">
+      <div class="list-h"><h2>Your proposals</h2><button type="button" class="linkbtn" id="refresh">Refresh</button></div>
+      <div class="tbl" id="tbl"><div class="muted">Loading…</div></div>
+    </section>
+  </div>
+</main>
+<div class="cursor" aria-hidden="true"></div>
+
+<script>
+/* myoprocess.com/access/new — Saad's private desk for proposals. Every call carries the access key; the server
+   (the `access` function) checks it, owns the price, and refuses to publish a proposal with a blank left in it. */
+const API = "https://dqqchgvwqrqnthnbrfkp.supabase.co/functions/v1/access";
+const KEY_STORE = "myo_access_key";
+const OFFERS = {
+  market_entry: { title: "Market Entry", italic: "Entry", tagline: "A buyer who confirmed interest, introduced to you within 5 business days." },
+  continuous_access: { title: "Continuous Access Program", italic: "Access", tagline: "Six qualified introductions within 30 business days." },
+};
+const $ = (id) => document.getElementById(id);
+const getKey = () => { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } };
+const setKey = (k) => { try { k ? localStorage.setItem(KEY_STORE, k) : localStorage.removeItem(KEY_STORE); } catch { /* private window */ } };
+let KEY = getKey();
+let state = { offer: "market_entry", content: null, editing: null };   // editing = {id, version, slug, status}
+
+const el = (tag, attrs = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") n.className = v; else if (k === "text") n.textContent = v; else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null) n.append(c);
+  return n;
+};
+
+async function api(body) {
+  const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json", "x-access-key": KEY }, body: JSON.stringify(body) });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { lock(); throw new Error("Your access key was not accepted."); }
+  return { ok: r.ok, status: r.status, ...j };
+}
+
+// ── Gate ───────────────────────────────────────────────────────────────────────────────────────────────────
+function lock() { setKey(""); KEY = ""; $("appView").hidden = true; $("gate").hidden = false; $("lock").hidden = true; }
+$("lock").onclick = lock;
+$("gateForm").onsubmit = async (e) => {
+  e.preventDefault();
+  KEY = $("key").value.trim();
+  $("gateMsg").textContent = "";
+  try { const r = await api({ op: "list" }); if (!r.ok) throw new Error(); setKey(KEY); open(r); }
+  catch (err) { $("gateMsg").textContent = err.message || "That key did not work."; }
+};
+function open(listResult) {
+  $("gate").hidden = true; $("appView").hidden = false; $("lock").hidden = false;
+  renderList(listResult); bind(); motion();
+}
+
+// ── Price and fields ───────────────────────────────────────────────────────────────────────────────────────
+const cents = () => { const s = $("pr").value.replace(/[$,\s]/g, ""); if (!/^\d{1,7}(\.\d{1,2})?$/.test(s)) return null; const c = Math.round(parseFloat(s) * 100); return c >= 100 ? c : null; };
+const money = (c) => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
+const fields = () => ({ company: $("co").value.trim(), contact: $("ct").value.trim(), price: cents() !== null ? money(cents()) : "" });
+
+// ── The editable document: tokens stay tokens, blanks stay red ────────────────────────────────────────────
+const SPLIT = /(\{\{(?:company|price|contact)\}\}|\[(?:to confirm|missing)[^\]]*\])/i;
+function richText(node, text) {
+  const f = fields();
+  for (const part of String(text).split(SPLIT)) {
+    if (!part) continue;
+    const tok = part.match(/^\{\{(company|price|contact)\}\}$/);
+    if (tok) node.append(el("span", { class: "tok", "data-tok": tok[1], contenteditable: "false", text: f[tok[1]] || `[${tok[1]}]` }));
+    else if (SPLIT.test(part) && part.startsWith("[")) node.append(el("span", { class: "ph", text: part }));
+    else node.append(part);
+  }
+  return node;
+}
+function readText(node) {
+  const c = node.cloneNode(true);
+  c.querySelectorAll(".tok").forEach((t) => t.replaceWith(`{{${t.dataset.tok}}}`));
+  return c.textContent.replace(/ /g, " ").replace(/\s+/g, " ").trim();
+}
+const editable = (tag, cls, text) => richText(el(tag, { class: cls, contenteditable: "true" }), text);
+const list = (tag, items) => { const l = el(tag, { contenteditable: "true" }); items.forEach((i) => l.append(richText(el("li"), i))); return l; };
+
+function blockEl(b, j) {
+  let n;
+  switch (b.t) {
+    case "lead": n = editable("p", "lead", b.text); break;
+    case "p": n = editable("p", "", b.text); break;
+    case "note": n = editable("p", "note", b.text); break;
+    case "h": n = editable("h3", "", b.text); break;
+    case "ul": case "ol": n = list(b.t, b.items); break;
+    case "confirmed": n = el("div", { class: "d-confirmed" }, el("span", { text: b.label }), list("ul", b.items)); break;
+    case "cards": n = el("div", { class: "d-cards" }, b.items.map((c) => el("div", { class: "d-card" }, editable("h4", "ct", c.title), editable("p", "cx", c.text)))); break;
+    case "price": n = el("div", { class: "d-inv" }, el("span", {}, b.label), richText(el("b"), "{{price}}")); break;
+  }
+  n.dataset.b = String(j);
+  return n;
+}
+
+function renderDoc(animate) {
+  const doc = $("doc"), c = state.content, o = OFFERS[state.offer];
+  if (!c) { doc.replaceChildren(el("div", { class: "empty" }, el("b", { text: "Nothing drafted yet" }), el("p", { text: "Paste the conversation and click Draft with AI. The proposal appears here." }))); return check(); }
+  const h1 = el("h2", { class: "d-h1" }); const i = o.title.indexOf(o.italic);
+  h1.append(o.title.slice(0, i), el("i", { text: o.italic }), o.title.slice(i + o.italic.length));
+  const opp = c.opportunity_title != null ? el("div", {}, el("span", { text: "Opportunity" }), richText(el("b", { contenteditable: "true", id: "opp" }), c.opportunity_title)) : null;
+  const head = [
+    richText(el("p", { class: "d-for" }), "Prepared for {{contact}} · {{company}}"),
+    h1, el("p", { class: "d-what", text: o.tagline }), el("div", { class: "d-pow" }, el("i"), "Powered by myoProcess Intelligence"),
+    el("div", { class: "d-meta" }, opp,
+      el("div", {}, el("span", { text: "Prepared for" }), richText(el("b"), "{{contact}}")),
+      el("div", {}, el("span", { text: "Prepared by" }), el("b", { text: "Saad Belcaid" })),
+      el("div", { class: "mprice" }, el("span", { text: "Investment" }), richText(el("b"), "{{price}}"))),
+  ];
+  const secs = c.sections.map((s, si) => el("div", { class: "d-sec", "data-s": String(si) },
+    el("div", {}, el("small", { text: String(si + 1).padStart(2, "0") }), richText(el("h2", { class: "sec-title", contenteditable: "true" }), s.title)),
+    el("div", {}, s.blocks.map(blockEl))));
+  doc.replaceChildren(...head, ...secs, richText(el("div", { class: "d-sign" }), "Sign and pay {{price}} · the customer types their name and pays here"));
+  if (animate && document.documentElement.classList.contains("motion")) {
+    [...doc.children].forEach((ch, k) => ch.style.setProperty("--k", k));
+    doc.classList.remove("drafted"); void doc.offsetWidth; doc.classList.add("drafted");
+  }
+  check();
+}
+
+function readDoc() {
+  const c = state.content; if (!c) return null;
+  const doc = $("doc");
+  const out = { sections: c.sections.map((s, si) => {
+    const sec = doc.querySelector(`[data-s="${si}"]`);
+    return { key: s.key, title: readText(sec.querySelector(".sec-title")), blocks: s.blocks.map((b, j) => {
+      const n = sec.querySelector(`[data-b="${j}"]`);
+      switch (b.t) {
+        case "lead": case "p": case "note": case "h": return { t: b.t, text: readText(n) };
+        case "ul": case "ol": return { t: b.t, items: [...n.querySelectorAll("li")].map(readText).filter(Boolean) };
+        case "confirmed": return { t: b.t, label: b.label, items: [...n.querySelectorAll("li")].map(readText).filter(Boolean) };
+        case "cards": return { t: b.t, items: [...n.querySelectorAll(".d-card")].map((x) => ({ title: readText(x.querySelector(".ct")), text: readText(x.querySelector(".cx")) })) };
+        default: return b;
+      }
+    }).filter((b) => (b.text ?? "x") !== "" && (!b.items || b.items.length)) };
+  }) };
+  const opp = $("opp"); if (opp) out.opportunity_title = readText(opp); else if (c.opportunity_title) out.opportunity_title = c.opportunity_title;
+  return out;
+}
+
+function refreshTokens() {
+  const f = fields();
+  document.querySelectorAll(".tok").forEach((t) => { t.textContent = f[t.dataset.tok] || `[${t.dataset.tok}]`; });
+  check();
+}
+
+// What blocks the link: say it in plain words.
+function check() {
+  const miss = [];
+  if (!state.content) miss.push("the draft");
+  if (!$("co").value.trim()) miss.push("company");
+  if (!$("ct").value.trim()) miss.push("contact");
+  if (cents() === null) miss.push("price");
+  const blanks = document.querySelectorAll("#doc .ph").length;
+  const paid = state.editing && state.editing.status !== "open";
+  const m = $("msg"); m.className = "msg";
+  if (paid) m.textContent = "";
+  else if (!state.content) m.textContent = "Draft the proposal first.";
+  else if (miss.length) m.textContent = "Missing: " + miss.join(", ") + ".";
+  else if (blanks) m.textContent = `Fill the ${blanks} blank${blanks > 1 ? "s" : ""} marked in red. The link stays locked until they are filled.`;
+  else m.textContent = "";
+  $("make").disabled = paid || miss.length > 0 || blanks > 0;
+  const see = $("see");
+  if (state.editing) { see.href = "/access/" + state.editing.slug; see.removeAttribute("aria-disabled"); } else { see.removeAttribute("href"); see.setAttribute("aria-disabled", "true"); }
+}
+
+function setOffer(o, rebuild) {
+  state.offer = o;
+  document.querySelectorAll("#offer button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.o === o)));
+  if (rebuild) { state.content = null; renderDoc(); }
+}
+
+// ── Actions ────────────────────────────────────────────────────────────────────────────────────────────────
+let bound = false;
+function bind() {
+  if (bound) return; bound = true;
+  document.querySelectorAll("#offer button").forEach((b) => b.addEventListener("click", () => {
+    if (state.editing || b.dataset.o === state.offer) return;
+    setOffer(b.dataset.o, true);
+  }));
+  ["co", "ct", "rl", "pr"].forEach((id) => $(id).addEventListener("input", refreshTokens));
+  $("pr").addEventListener("blur", () => { const c = cents(); if (c !== null) $("pr").value = (c / 100).toLocaleString("en-US", { minimumFractionDigits: c % 100 ? 2 : 0 }); });
+  $("doc").addEventListener("input", () => { clearTimeout(window.__chk); window.__chk = setTimeout(check, 200); });
+  $("doc").addEventListener("paste", (e) => { if (!e.target.closest('[contenteditable="true"]')) return; e.preventDefault(); document.execCommand("insertText", false, e.clipboardData.getData("text/plain")); });
+  $("draft").onclick = draft;
+  $("make").onclick = save;
+  $("copy").onclick = () => { navigator.clipboard?.writeText("https://" + $("url").textContent).catch(() => {}); $("copy").textContent = "Copied"; setTimeout(() => $("copy").textContent = "Copy", 1500); };
+  $("reset").onclick = reset;
+  $("refresh").onclick = loadList;
+}
+
+async function draft() {
+  const b = $("draft");
+  if ($("cv").value.trim().length < 40) { $("msg").textContent = "Paste the conversation first."; return; }
+  if (state.content && !confirm("Draft again? Your edits to the current draft will be replaced.")) return;
+  b.classList.add("busy"); b.disabled = true; b.innerHTML = '<span class="spark">✦</span>Reading the conversation…';
+  try {
+    const r = await api({ op: "draft", offer: state.offer, company: $("co").value, contact_name: $("ct").value, contact_title: $("rl").value, conversation: $("cv").value });
+    if (!r.ok) throw new Error(r.message || "Drafting failed. Try again.");
+    state.content = r.content; renderDoc(true);
+  } catch (e) { $("msg").textContent = e.message; }
+  finally { b.classList.remove("busy"); b.disabled = false; b.innerHTML = '<span class="spark">✦</span>' + (state.content ? "Draft again" : "Draft with AI"); }
+}
+
+async function save() {
+  const content = readDoc(), btn = $("make");
+  btn.disabled = true; btn.classList.add("busy");
+  try {
+    const common = { company: $("co").value, contact_name: $("ct").value, contact_title: $("rl").value, price: $("pr").value, content };
+    const r = state.editing
+      ? await api({ op: "update", id: state.editing.id, version: state.editing.version, ...common })
+      : await api({ op: "create", offer: state.offer, conversation: $("cv").value, ...common });
+    if (!r.ok) {
+      if (r.error === "placeholders") throw new Error("Fill the blanks marked in red first.");
+      if (r.error === "changed") throw new Error("This proposal changed in another window. Open it again from the list.");
+      if (r.error === "paid") throw new Error("This proposal is signed and paid. It can no longer change.");
+      throw new Error(r.message || "Could not save. Try again.");
+    }
+    if (state.editing) { state.editing.version = r.version; }
+    else { state.editing = { id: r.id, version: r.version, slug: r.slug, status: "open" }; }
+    state.content = content;
+    showMade(!r.url);
+    const m = $("msg"); m.className = "msg ok"; m.textContent = r.url ? "" : "Saved. The customer's link now shows this version.";
+    await loadList(state.editing.id);
+  } catch (e) { $("msg").className = "msg"; $("msg").textContent = e.message; }
+  finally { btn.classList.remove("busy"); check(); }
+}
+
+function showMade(saved) {
+  $("made").hidden = false; $("reset").hidden = false;
+  $("url").textContent = "www.myoprocess.com/access/" + state.editing.slug;
+  $("madeTitle").textContent = saved ? "✓ Saved. Same link." : "✓ Link created. You've signed it.";
+  $("madeLine").textContent = `Send it to ${$("ct").value.trim().split(" ")[0] || "them"}. You can change the price or the text until they pay.`;
+  $("make").textContent = "Save changes";
+  $("title").innerHTML = "Edit <i>proposal</i>";
+  document.querySelectorAll("#offer button").forEach((b) => b.disabled = true);
+  check();
+}
+
+function reset() {
+  state = { offer: "market_entry", content: null, editing: null };
+  ["co", "ct", "rl", "pr", "cv"].forEach((id) => $(id).value = "");
+  document.querySelectorAll("#offer button").forEach((b) => b.disabled = false);
+  setOffer("market_entry", true);
+  $("made").hidden = true; $("reset").hidden = true; $("lockedNote").hidden = true;
+  $("make").textContent = "Create link"; $("title").innerHTML = "New <i>proposal</i>";
+  $("draft").innerHTML = '<span class="spark">✦</span>Draft with AI'; $("draft").disabled = false;
+  scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function edit(id) {
+  const r = await api({ op: "get", id });
+  if (!r.ok) return;
+  const p = r.proposal;
+  reset();
+  state.editing = { id: p.id, version: p.version, slug: p.slug, status: p.status };
+  setOffer(p.offer, false);
+  $("co").value = p.company; $("ct").value = p.contact_name; $("rl").value = p.contact_title || "";
+  $("pr").value = (p.price_cents / 100).toLocaleString("en-US", { minimumFractionDigits: p.price_cents % 100 ? 2 : 0 });
+  $("cv").value = p.conversation || "";
+  state.content = p.content; renderDoc(true); showMade(true);
+  $("madeTitle").textContent = "Editing this proposal. Same link.";
+  if (p.status !== "open") {
+    const ln = $("lockedNote"); ln.hidden = false;
+    ln.textContent = p.status === "paid" ? `Signed by ${r.signed?.name ?? "the customer"} and paid ${money(p.amount_paid_cents)}. Locked: what they signed can't change.` : "Withdrawn. This link no longer opens.";
+    $("draft").disabled = true;
+    document.querySelectorAll('#doc [contenteditable="true"]').forEach((n) => n.setAttribute("contenteditable", "false"));
+  }
+  check();
+  scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ── The list ───────────────────────────────────────────────────────────────────────────────────────────────
+const ago = (iso) => { const s = (Date.now() - new Date(iso)) / 1000; if (s < 90) return "just now"; if (s < 5400) return Math.round(s / 60) + " min ago"; if (s < 129600) return Math.round(s / 3600) + " h ago"; return Math.round(s / 86400) + " days ago"; };
+const day = (iso) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+
+async function loadList(flashId) {
+  try { renderList(await api({ op: "list" }), flashId); } catch (e) { $("tbl").replaceChildren(el("div", { class: "muted", text: e.message })); }
+}
+
+function renderList(r, flashId) {
+  const rows = r.proposals || [];
+  const tbl = $("tbl");
+  if (!rows.length) { tbl.replaceChildren(el("div", { class: "muted", text: "No proposals yet. Your first one appears here once you create its link." })); return; }
+  const hd = el("div", { class: "row hd" }, el("div", { text: "Customer" }), el("div", { text: "Offer" }), el("div", { text: "Price" }), el("div", { text: "Status" }), el("div"));
+  tbl.replaceChildren(hd, ...rows.map((p) => {
+    const st = p.status === "paid"
+      ? el("span", { class: "st paid" }, el("i"), el("span", {}, `Signed and paid · ${day(p.paid_at)}`, p.email_state !== "sent" ? el("small", { text: "Signed copy: sending" }) : null))
+      : p.status === "void" ? el("span", { class: "st void" }, el("i"), "Withdrawn")
+      : p.open_count > 0 ? el("span", { class: "st opened" }, el("i"), el("span", {}, `Opened ${p.open_count}× · ${ago(p.last_opened_at)}`, el("small", { text: `First opened ${day(p.first_opened_at)}` })))
+      : el("span", { class: "st" }, el("i"), el("span", {}, "Not opened yet", el("small", { text: `Link created ${ago(p.created_at)}` })));
+    const priceInput = el("input", { value: (p.price_cents / 100).toLocaleString("en-US", { minimumFractionDigits: p.price_cents % 100 ? 2 : 0 }), "aria-label": `Price for ${p.company}`, inputmode: "decimal" });
+    const price = p.status === "open" ? el("div", { class: "pr" }, el("span", { text: "$" }), priceInput) : el("div", { class: "pr" }, el("b", { text: money(p.amount_paid_cents ?? p.price_cents) }));
+    const acts = el("div", { class: "rowact" });
+    const link = (r.base || "https://www.myoprocess.com/access/") + p.slug;
+    if (p.status === "open") {
+      const sv = el("button", { type: "button", class: "mini", text: "Save price" });
+      sv.onclick = async () => {
+        const res = await api({ op: "update", id: p.id, version: p.version, price: priceInput.value });
+        if (res.ok) { sv.textContent = "Saved · same link"; sv.classList.add("ok"); p.version = res.version; if (state.editing?.id === p.id) { state.editing.version = res.version; $("pr").value = priceInput.value; refreshTokens(); } setTimeout(() => { sv.textContent = "Save price"; sv.classList.remove("ok"); }, 1800); }
+        else { sv.textContent = res.error === "paid" ? "Paid · locked" : res.error === "changed" ? "Changed · refresh" : "Check the price"; }
+      };
+      acts.append(sv);
+    }
+    const cp = el("button", { type: "button", class: "mini", text: "Copy link" });
+    cp.onclick = () => { navigator.clipboard?.writeText(link).catch(() => {}); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy link", 1400); };
+    const ed = el("button", { type: "button", class: "mini", text: p.status === "open" ? "Edit" : "View" });
+    ed.onclick = () => edit(p.id);
+    acts.append(cp, ed, el("a", { class: "mini", href: "/access/" + p.slug, target: "_blank", rel: "noopener", text: "Open" }));
+    if (p.status === "open") {
+      const vd = el("button", { type: "button", class: "mini danger", text: "Withdraw" });
+      vd.onclick = async () => { if (!confirm(`Withdraw the proposal for ${p.company}? The link stops working.`)) return; await api({ op: "void", id: p.id }); loadList(); };
+      acts.append(vd);
+    }
+    return el("div", { class: "row" + (p.id === flashId ? " rowfresh" : "") },
+      el("div", { class: "co" }, el("b", { text: p.company }), el("small", { text: p.contact_name })),
+      el("div", { text: p.offer === "market_entry" ? "Market Entry" : "Continuous Access Program" }),
+      price, el("div", {}, st), acts);
+  }));
+}
+
+// ── Motion: the homepage layer, for this page's elements ────────────────────────────────────────────────────
+function motion() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("motion")) return;
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches, root = document.documentElement;
+  root.classList.add("motion");
+  const h1 = $("title"); let n = 0;
+  const split = (node) => [...node.childNodes].forEach((c) => {
+    if (c.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach((t) => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(" ")); return; }
+        const w = document.createElement("span"); w.className = "w"; w.style.setProperty("--i", n++);
+        const inner = document.createElement("span"); inner.textContent = t; w.appendChild(inner); frag.appendChild(w);
+      });
+      node.replaceChild(frag, c);
+    } else if (c.nodeType === 1) split(c);
+  });
+  split(h1);
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .1 });
+  document.querySelectorAll(".list-h, .tbl").forEach((x) => { x.classList.add("reveal"); io.observe(x); });
+  const mast = document.querySelector(".mast");
+  const onScroll = () => { const y = scrollY, max = root.scrollHeight - innerHeight; mast.classList.toggle("scrolled", y > 24); mast.style.setProperty("--progress", (max > 0 ? Math.min(100, y / max * 100) : 0) + "%"); };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  if (!fine) return;
+  document.querySelectorAll(".seg button").forEach((a) => {
+    a.classList.add("mag");
+    a.addEventListener("mousemove", (e) => { const r = a.getBoundingClientRect(); a.style.transform = `translate(${((e.clientX - r.left) / r.width - .5) * 6}px, ${((e.clientY - r.top) / r.height - .5) * 6}px)`; });
+    a.addEventListener("mouseleave", () => { a.style.transform = ""; });
+  });
+  const ring = document.querySelector(".cursor");
+  let cx = 0, cy = 0, rx = 0, ry = 0, shown = false;
+  addEventListener("mousemove", (e) => { cx = e.clientX; cy = e.clientY; if (!shown) { shown = true; rx = cx; ry = cy; document.body.classList.add("cursor-on"); } });
+  document.addEventListener("mouseleave", () => { document.body.classList.remove("cursor-on"); shown = false; });
+  addEventListener("mousedown", () => ring.classList.add("is-down")); addEventListener("mouseup", () => ring.classList.remove("is-down"));
+  document.addEventListener("mouseover", (e) => ring.classList.toggle("is-hover", !!e.target.closest('a, button, [contenteditable="true"]')));
+  const loop = () => { rx += (cx - rx) * .22; ry += (cy - ry) * .22; ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`; requestAnimationFrame(loop); };
+  loop();
+}
+
+// ── Start ──────────────────────────────────────────────────────────────────────────────────────────────────
+(async () => {
+  if (!KEY) { $("gate").hidden = false; return; }
+  try { const r = await api({ op: "list" }); if (!r.ok) throw new Error(); open(r); }
+  catch { $("gate").hidden = false; }
+})();
+</script>
+</body>
+</html>

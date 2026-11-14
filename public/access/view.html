@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Proposal · myoProcess</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/endive/stripe.js" async></script>
+<style>
+  :root {
+    --paper: #faf9f5; --paper-2: #ffffff;
+    --ink: #121212; --ink-2: #3a3a3a; --sub: #6c6a64; --mute: #9a978f;
+    --rule: #dedad0; --rule-2: #ece9e0;
+    --ox: #6b1818; --ox-2: #8a1f1f; --ok: #1f5f3a;
+    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --tight: "Inter Tight", "Inter", -apple-system, sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    --script: "Mrs Saint Delafield", "Snell Roundhand", cursive;
+    --gutter: 32px; --max: 960px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: var(--sans); font-size: 16.5px; line-height: 1.6; color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--sub); }
+  [hidden] { display: none !important; }
+
+  .mast { border-bottom: 1px solid var(--rule); background: var(--paper); position: sticky; top: 0; z-index: 20; }
+  .mast .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .wordmark { font-family: var(--tight); font-weight: 600; font-size: 17px; letter-spacing: -.01em; text-decoration: none; }
+  .wordmark em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--ox); font-size: 20px; margin-right: 1px; }
+  .mast-right { font-size: 14px; font-weight: 500; }
+  .u { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; }
+  .u:hover { color: var(--ox); }
+
+  .state { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .state h1 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.05; margin: 0; }
+  .state p { color: var(--ink-2); margin: 0; max-width: 46ch; }
+
+  .hero { padding: 88px 0 0; }
+  .hero .for { color: var(--ox); margin: 0 0 22px; }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 7vw, 84px); line-height: .98; letter-spacing: -.015em; margin: 0 0 22px; text-wrap: balance; }
+  .hero h1 i { font-style: italic; color: var(--ox); }
+  .hero .what { font-size: 21px; line-height: 1.45; color: var(--ink-2); margin: 0 0 22px; max-width: 40ch; }
+  .powered { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+  .powered i { width: 7px; height: 7px; border-radius: 50%; background: var(--ox); box-shadow: 0 0 0 4px rgba(107,24,24,.12); display: inline-block; }
+  .meta { list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .meta li { padding: 18px 20px 18px 0; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .meta li + li { border-left: 1px solid var(--rule); padding-left: 20px; }
+  .meta b { font-weight: 500; font-size: 15px; line-height: 1.4; }
+  .meta b small { display: block; font-weight: 400; color: var(--sub); font-size: 13.5px; }
+  .meta li.price b { font-family: var(--tight); font-weight: 600; font-size: 22px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+
+  .sec { display: grid; grid-template-columns: 220px 1fr; gap: 40px; padding: 56px 0; border-bottom: 1px solid var(--rule); }
+  .sec-h { display: flex; flex-direction: column; gap: 10px; }
+  .sec-h .n { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--ox); }
+  .sec-h h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
+  .sec-b p { margin: 0 0 14px; color: var(--ink-2); max-width: 62ch; }
+  .sec-b p:last-child { margin-bottom: 0; }
+  .sec-b ul, .sec-b ol { margin: 0 0 14px; padding-left: 22px; color: var(--ink-2); }
+  .sec-b li { margin: 0 0 6px; max-width: 60ch; padding-left: 4px; }
+  .sec-b h3 { font-family: var(--tight); font-weight: 600; font-size: 15px; margin: 22px 0 8px; }
+  .sec-b h3:first-child { margin-top: 0; }
+  .note { font-size: 14.5px; color: var(--sub) !important; }
+  .big { font-size: 19px; color: var(--ink) !important; }
+  .confirmed { background: var(--paper-2); border: 1px solid var(--rule); border-left: 2px solid var(--ox); padding: 18px 20px 6px; margin: 0 0 16px; }
+  .confirmed .eyebrow { display: block; margin-bottom: 10px; color: var(--ox); }
+  .gs { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 16px; margin: 0 0 22px; }
+  .gs.one { --cols: 1; max-width: 520px; }
+  .g { background: var(--paper-2); border: 1px solid var(--rule); border-top: 2px solid var(--ox); padding: 20px 20px 22px; }
+  .g h3 { font-family: var(--tight); font-weight: 600; font-size: 15px; margin: 0 0 8px !important; letter-spacing: -.005em; }
+  .g p { font-size: 14.5px; line-height: 1.55; margin: 0; color: var(--ink-2); }
+  .inv { border: 1px solid var(--rule); background: var(--paper-2); margin-bottom: 16px; }
+  .inv-row { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 18px 20px; }
+  .inv-row + .inv-row { border-top: 1px solid var(--rule-2); }
+  .inv-row small { display: block; color: var(--sub); font-size: 13.5px; margin-top: 2px; }
+  .inv-row .amt { font-family: var(--tight); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 17px; white-space: nowrap; }
+  .inv-total { background: var(--paper); }
+  .inv-total .amt { font-size: 24px; letter-spacing: -.02em; }
+
+  .sign { padding: 64px 0 88px; }
+  .sign h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5vw, 52px); line-height: 1; margin: 12px 0 10px; letter-spacing: -.012em; }
+  .sign .lede { color: var(--ink-2); margin: 0 0 36px; max-width: 58ch; }
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; align-items: start; }
+  .sig { background: var(--paper-2); border: 1px solid var(--rule); padding: 22px 22px 18px; display: flex; flex-direction: column; }
+  .sig .who { font-size: 13.5px; color: var(--sub); }
+  .sig .script { font-family: var(--script); font-size: 46px; line-height: 1; height: 64px; display: flex; align-items: flex-end; color: #1d2a44; border-bottom: 1px solid var(--rule); margin: 14px 0 10px; padding-bottom: 6px; overflow: hidden; white-space: nowrap; }
+  .sig .script.empty { color: var(--mute); font-family: var(--sans); font-size: 14px; align-items: center; }
+  .sig .nm { font-weight: 500; font-size: 15px; }
+  .sig .when { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; color: var(--sub); margin-top: 4px; }
+  label.f { display: block; font-size: 13px; font-weight: 500; color: var(--ink-2); margin: 14px 0 6px; }
+  input.t { width: 100%; font: 400 16px var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 11px 12px; }
+  input.t:focus { outline: none; border-color: var(--ox); box-shadow: 0 0 0 3px rgba(107,24,24,.12); }
+  .agree { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--ink-2); margin: 16px 0 0; cursor: pointer; }
+  .agree input { margin-top: 4px; accent-color: var(--ox); width: 16px; height: 16px; flex: none; }
+  .pay { background: var(--paper-2); border: 1px solid var(--rule); padding: 22px; margin-top: 20px; }
+  .pay-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .pay-h b { font-weight: 600; font-size: 15px; }
+  .pay-h span { font-size: 12.5px; color: var(--sub); }
+  #payment-element { min-height: 120px; }
+  .btn { width: 100%; margin-top: 16px; font: 600 16px var(--sans); color: #fff; background: var(--ox); border: 0; border-radius: 6px; padding: 15px 18px; cursor: pointer; transition: background .15s, opacity .15s; }
+  .btn:hover:not(:disabled) { background: var(--ox-2); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn.busy { position: relative; overflow: hidden; }
+  .btn.busy::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent); animation: sweep 1s linear infinite; }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  .err { color: var(--ox); font-size: 14px; margin: 12px 0 0; min-height: 1px; }
+  .fine { font-size: 13px; color: var(--sub); margin: 12px 0 0; text-align: center; }
+  .done { background: var(--paper-2); border: 1px solid var(--rule); border-left: 3px solid var(--ok); padding: 22px; }
+  .done b { display: block; font-family: var(--serif); font-weight: 400; font-size: 30px; line-height: 1.1; margin-bottom: 8px; }
+  .done p { margin: 0 0 12px; color: var(--ink-2); }
+  .done a.dl { display: inline-block; font-weight: 600; font-size: 14.5px; color: var(--ox); }
+
+  .adminbar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 60; background: rgba(18,18,18,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #f3f1ea; font-size: 13px; padding: 9px 16px; border-radius: 999px; box-shadow: 0 12px 40px -12px rgba(0,0,0,.45); max-width: calc(100% - 32px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .adminbar a { color: #f3f1ea; margin-left: 10px; }
+
+  footer { border-top: 1px solid var(--rule); padding: 26px 0 96px; font-size: 13px; color: var(--sub); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    :root { --gutter: 16px; }
+    .hero { padding-top: 56px; }
+    .hero .what { font-size: 19px; }
+    .meta { grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
+    .meta li:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .meta li:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .sec { grid-template-columns: 1fr; gap: 18px; padding: 40px 0; }
+    .gs { grid-template-columns: 1fr; }
+    .sig-grid { grid-template-columns: 1fr; }
+    .sig .script { font-size: 40px; }
+  }
+
+  /* ── Motion: the same layer as myoprocess.com ─────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .motion .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding: .06em .02em 0 0; margin: -.06em -.02em 0 0; }
+    .motion .hero h1 .w > span { display: inline-block; transform: translateY(112%); animation: rise .9s cubic-bezier(.2,.75,.15,1) forwards; animation-delay: calc(120ms + var(--i) * 55ms); }
+    .motion .hero h1 i .w > span { background: linear-gradient(90deg, var(--ox) 50%, var(--ink) 50%); background-size: 200% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rise .9s cubic-bezier(.2,.75,.15,1) forwards, ink 1.1s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(120ms + var(--i) * 55ms), calc(520ms + var(--i) * 55ms); }
+    .motion .hero .for, .motion .hero .what, .motion .hero .powered, .motion .hero .meta { opacity: 0; transform: translateY(16px); animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .motion .hero .for { animation-delay: .05s; }
+    .motion .hero .what { animation-delay: .6s; }
+    .motion .hero .powered { animation-delay: .75s; }
+    .motion .hero .meta { animation-delay: .95s; position: relative; }
+    .motion .hero .meta::before { content: ""; position: absolute; left: 0; top: -1px; height: 1px; width: 0; background: var(--ink); animation: draw 1.2s cubic-bezier(.2,.7,.2,1) 1s forwards; }
+    .motion .mast .wrap > * { opacity: 0; animation: fadeUp .7s ease forwards; }
+    .motion .mast .wrap > :nth-child(2) { animation-delay: .1s; }
+    @keyframes rise { to { transform: none; } }
+    @keyframes ink { to { background-position: 0 0; } }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    @keyframes draw { to { width: 100%; } }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    .mast { transition: background .3s, box-shadow .3s; }
+    .mast.scrolled { background: rgba(250,249,245,.72); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+    .mast::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: var(--progress, 0%); background: var(--ox); transition: width .12s linear; }
+    .u { background-image: linear-gradient(var(--ox), var(--ox)), linear-gradient(currentColor, currentColor); background-size: 0% 2px, 100% 1px; background-position: 0 100%, 0 100%; background-repeat: no-repeat; transition: background-size .45s cubic-bezier(.2,.7,.2,1), color .2s, transform .35s cubic-bezier(.2,.7,.2,1); }
+    .u:hover { background-size: 100% 2px, 100% 1px; }
+    .mag { display: inline-block; will-change: transform; }
+    .motion .g { position: relative; border-top: 1px solid var(--rule); padding-top: 21px; }
+    .motion .g::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--ox); transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.2,.7,.1,1) calc(var(--i, 0) * 60ms); }
+    .motion .g > :not(.fx) { opacity: 0; transform: translateY(10px); transition: opacity .6s ease calc(var(--i, 0) * 60ms + 150ms), transform .6s cubic-bezier(.2,.7,.2,1) calc(var(--i, 0) * 60ms + 150ms); }
+    .motion .g.in::before { transform: scaleX(1); }
+    .motion .g.in > :not(.fx) { opacity: 1; transform: none; }
+    .fxcard { position: relative; overflow: hidden; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; }
+    .fxcard.tilt { transition: box-shadow .5s; }
+    .fxcard:hover { box-shadow: 0 30px 60px -30px rgba(20,18,14,.35); z-index: 2; }
+    .fxcard .fx { position: absolute; inset: 0; pointer-events: none; }
+    .fxcard .spot { opacity: 0; transition: opacity .4s; background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.95), rgba(255,255,255,0) 62%); mix-blend-mode: soft-light; }
+    .fxcard:hover .spot { opacity: 1; }
+    .fxcard .sheen { background: linear-gradient(112deg, transparent 32%, rgba(255,255,255,.65) 50%, transparent 68%); transform: translateX(-130%); opacity: 0; }
+    .fxcard:hover .sheen { animation: sheen 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes sheen { 0% { transform: translateX(-130%); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateX(130%); opacity: 0; } }
+    .fxcard .ripple { inset: auto; left: var(--rx); top: var(--ry); width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%) scale(0); background: radial-gradient(circle, rgba(107,24,24,.22), rgba(107,24,24,.08) 45%, rgba(107,24,24,0) 70%); animation: ripple .75s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes ripple { to { transform: translate(-50%, -50%) scale(70); opacity: 0; } }
+    .fxcard:hover h3 { color: var(--ox); }
+    .cursor { display: none; }
+    @media (hover: hover) and (pointer: fine) {
+      .cursor { display: block; position: fixed; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--ox); pointer-events: none; z-index: 1000; opacity: 0; transform: translate(-50%, -50%); transition: width .28s cubic-bezier(.2,.7,.2,1), height .28s cubic-bezier(.2,.7,.2,1), background .28s, opacity .3s, border-color .28s; }
+      body.cursor-on .cursor { opacity: 1; }
+      .cursor.is-hover { width: 46px; height: 46px; background: rgba(107,24,24,.07); border-color: rgba(107,24,24,.45); }
+      .cursor.is-down { width: 30px; height: 30px; background: rgba(107,24,24,.16); }
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <a href="https://www.myoprocess.com" class="wordmark"><em>m</em>yoProcess</a>
+    <div class="mast-right"><a class="u" href="mailto:saad@myoprocess.com">saad@myoprocess.com</a></div>
+  </div>
+</header>
+
+<main id="app">
+  <div class="wrap state" id="loading"><p class="eyebrow">Loading your proposal…</p></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>myoProcess, Inc. · Cyprus · New York · Remote</div>
+    <div>© 2026</div>
+  </div>
+</footer>
+<div class="cursor" aria-hidden="true"></div>
+
+<script>
+/* myoprocess.com/access/<slug> — a customer reads, signs and pays. Truth is on the server (the `access` function):
+   the price comes from there, the signature is recorded there before any charge, and "paid" is decided there. */
+const API = "https://dqqchgvwqrqnthnbrfkp.supabase.co/functions/v1/access";
+const KEY_STORE = "myo_access_key";
+const slug = (location.pathname.split("/").filter(Boolean)[1] || new URLSearchParams(location.search).get("slug") || "").toLowerCase();
+const adminKey = (() => { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } })();
+const app = document.getElementById("app");
+let P = null, stripe = null, elements = null;
+
+const el = (tag, attrs = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null || v === false) continue;
+    if (k === "class") n.className = v; else if (k === "text") n.textContent = v; else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null) n.append(c);
+  return n;
+};
+const headers = (extra = {}) => adminKey ? { ...extra, "x-access-key": adminKey } : extra;
+const fmtDate = (iso) => new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC", timeZoneName: "short" });
+
+function stateScreen(title, line) {
+  app.replaceChildren(el("div", { class: "wrap state" }, el("h1", { text: title }), el("p", { text: line })));
+  document.title = "myoProcess";
+}
+
+function renderBlocks(blocks) {
+  return blocks.map((b) => {
+    switch (b.t) {
+      case "lead": return el("p", { class: "big", text: b.text });
+      case "p": return el("p", { text: b.text });
+      case "note": return el("p", { class: "note", text: b.text });
+      case "h": return el("h3", { text: b.text });
+      case "ul": return el("ul", {}, b.items.map((i) => el("li", { text: i })));
+      case "ol": return el("ol", {}, b.items.map((i) => el("li", { text: i })));
+      case "confirmed": return el("div", { class: "confirmed" }, el("span", { class: "eyebrow", text: b.label }), el("ul", {}, b.items.map((i) => el("li", { text: i }))));
+      case "cards": {
+        const gs = el("div", { class: "gs" + (b.items.length === 1 ? " one" : "") }, b.items.map((c) => el("div", { class: "g" }, el("h3", { text: c.title }), el("p", { text: c.text }))));
+        if (b.items.length > 1) gs.style.setProperty("--cols", String(Math.min(3, b.items.length)));
+        return gs;
+      }
+      case "price": return el("div", { class: "inv" },
+        el("div", { class: "inv-row" }, el("div", {}, b.label, b.sub ? el("small", { text: b.sub }) : null), el("div", { class: "amt", text: P.price_text + " USD" })),
+        el("div", { class: "inv-row inv-total" }, el("div", { text: b.total }), el("div", { class: "amt count", text: P.price_text })));
+      default: return null;
+    }
+  });
+}
+
+function titleWithItalic(title, italic) {
+  const h = el("h1");
+  const i = title.indexOf(italic);
+  if (!italic || i < 0) { h.textContent = title; return h; }
+  h.append(title.slice(0, i), el("i", { text: italic }), title.slice(i + italic.length));
+  return h;
+}
+
+function render() {
+  document.title = `${P.offer_title} · ${P.company} · myoProcess`;
+  const metaItems = [
+    P.opportunity_title ? el("li", {}, el("span", { class: "eyebrow", text: "Opportunity" }), el("b", { text: P.opportunity_title })) : null,
+    el("li", {}, el("span", { class: "eyebrow", text: "Prepared for" }), el("b", {}, P.contact_name, P.contact_title ? el("small", { text: P.contact_title }) : null)),
+    el("li", {}, el("span", { class: "eyebrow", text: "Prepared by" }), el("b", {}, P.prepared_by.name, el("small", { text: P.prepared_by.title }))),
+    el("li", { class: "price" }, el("span", { class: "eyebrow", text: "Investment" }), el("b", { class: "count", text: P.price_text })),
+  ];
+  const hero = el("section", { class: "hero" }, el("div", { class: "wrap" },
+    el("p", { class: "eyebrow for", text: `Prepared for ${P.contact_name} · ${P.company}` }),
+    titleWithItalic(P.offer_title, P.italic),
+    el("p", { class: "what", text: P.tagline }),
+    el("div", { class: "powered" }, el("i"), "Powered by myoProcess Intelligence"),
+    el("ul", { class: "meta" }, metaItems)));
+  const body = el("div", { class: "wrap" }, P.sections.map((s, i) =>
+    el("section", { class: "sec" },
+      el("div", { class: "sec-h" }, el("span", { class: "n", text: String(i + 1).padStart(2, "0") }), el("h2", { text: s.title })),
+      el("div", { class: "sec-b" }, renderBlocks(s.blocks)))));
+  app.replaceChildren(hero, body, signSection(P.sections.length + 1));
+  if (P.status === "open") mountPayment();
+  motion();
+}
+
+function signSection(n) {
+  const paid = P.status === "paid" && P.signed;
+  const client = el("div", { class: "sig" }, el("span", { class: "who", text: P.company }));
+  const sigOut = el("div", { class: "script" + (paid ? "" : " empty"), id: "sigOut", text: paid ? P.signed.name : "Your signature appears here" });
+  client.append(sigOut);
+  if (paid) {
+    client.append(el("span", { class: "nm", text: P.signed.name }), el("span", { class: "when", text: "Signed " + fmtDate(P.signed.at) }));
+  } else {
+    client.append(
+      el("label", { class: "f", for: "nm", text: "Full name" }), el("input", { class: "t", id: "nm", autocomplete: "name", placeholder: P.contact_name }),
+      el("label", { class: "f", for: "em", text: "Email for your signed copy" }), el("input", { class: "t", id: "em", type: "email", autocomplete: "email" }));
+  }
+  const grid = el("div", { class: "sig-grid" },
+    el("div", { class: "sig" }, el("span", { class: "who", text: "myoProcess, Inc." }), el("div", { class: "script", text: P.prepared_by.name }),
+      el("span", { class: "nm", text: P.prepared_by.name + ", Founder" }), el("span", { class: "when", text: "Signed when this proposal was issued" })),
+    client);
+  const wrap = el("div", { class: "wrap" },
+    el("span", { class: "eyebrow", text: String(n).padStart(2, "0") + " · Agreement" }),
+    el("h2", { text: paid ? "Signed and paid" : "Sign and pay" }),
+    el("p", { class: "lede", text: paid ? "This agreement is complete. The signed copy was emailed to both parties." : "Type your name to sign. Your signature and payment complete the agreement, and a signed copy is emailed to you and to myoProcess." }),
+    grid);
+  if (paid) {
+    wrap.append(el("div", { class: "done" }, el("b", { text: "Agreement signed." }),
+      el("p", { text: `Signed by ${P.signed.name} on ${fmtDate(P.signed.at)}. Payment of ${P.signed.paid_text} received.` }),
+      el("a", { class: "dl", href: `${API}?op=pdf&slug=${encodeURIComponent(slug)}`, text: "Download the signed PDF" })));
+  } else {
+    wrap.append(
+      el("label", { class: "agree" }, el("input", { type: "checkbox", id: "ok" }), el("span", { text: `I have read this proposal and agree to its terms on behalf of ${P.company}.` })),
+      el("div", { class: "pay" },
+        el("div", { class: "pay-h" }, el("b", { text: "Payment" }), el("span", { text: "Secured by Stripe" })),
+        el("div", { id: "payment-element" }),
+        el("button", { class: "btn", id: "go", type: "button", disabled: true, text: `Sign and pay ${P.price_text}` }),
+        el("p", { class: "err", id: "err", role: "alert" }),
+        el("p", { class: "fine", text: "Charged once. Refunds follow the guarantee above." })));
+  }
+  return el("section", { class: "sign", id: "sign" }, wrap);
+}
+
+let cardComplete = false;
+function refreshButton() {
+  const nm = document.getElementById("nm"), em = document.getElementById("em"), ok = document.getElementById("ok"), go = document.getElementById("go"), out = document.getElementById("sigOut");
+  if (!nm) return;
+  const v = nm.value.trim();
+  out.textContent = v || "Your signature appears here";
+  out.classList.toggle("empty", !v);
+  go.disabled = !(v.length >= 2 && /\S+@\S+\.\S+/.test(em.value) && ok.checked && cardComplete);
+}
+
+async function mountPayment() {
+  ["nm", "em"].forEach((id) => document.getElementById(id).addEventListener("input", refreshButton));
+  document.getElementById("ok").addEventListener("change", refreshButton);
+  const err = document.getElementById("err");
+  const pk = window.__PK;
+  for (let i = 0; i < 50 && !window.Stripe; i++) await new Promise((r) => setTimeout(r, 100));
+  if (!window.Stripe || !pk) { err.textContent = "The card form could not load. Email saad@myoprocess.com and we will send you a payment link."; return; }
+  stripe = window.Stripe(pk);
+  elements = stripe.elements({
+    mode: "payment", amount: P.price_cents, currency: P.currency,
+    fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" }],
+    appearance: {
+      theme: "stripe",
+      variables: { colorPrimary: "#6b1818", colorBackground: "#faf9f5", colorText: "#121212", colorTextSecondary: "#6c6a64", colorDanger: "#6b1818", fontFamily: "Inter, -apple-system, sans-serif", fontSizeBase: "15px", borderRadius: "6px", spacingUnit: "4px" },
+      rules: { ".Input": { border: "1px solid #dedad0", boxShadow: "none" }, ".Input:focus": { borderColor: "#6b1818", boxShadow: "0 0 0 3px rgba(107,24,24,.12)" } },
+    },
+  });
+  const pe = elements.create("payment", { layout: "tabs" });
+  pe.on("change", (e) => { cardComplete = !!e.complete; refreshButton(); });
+  pe.mount("#payment-element");
+  document.getElementById("go").addEventListener("click", signAndPay);
+}
+
+async function signAndPay() {
+  const go = document.getElementById("go"), err = document.getElementById("err");
+  const name = document.getElementById("nm").value.trim(), email = document.getElementById("em").value.trim();
+  const busy = (on, label) => { go.disabled = on; go.classList.toggle("busy", on); go.textContent = label; };
+  err.textContent = "";
+  busy(true, "Checking your card…");
+  const { error: submitError } = await elements.submit();
+  if (submitError) { err.textContent = submitError.message || "Check your card details."; busy(false, `Sign and pay ${P.price_text}`); refreshButton(); return; }
+  busy(true, "Recording your signature…");
+  let r, j;
+  try {
+    r = await fetch(API, { method: "POST", headers: headers({ "Content-Type": "application/json" }), body: JSON.stringify({ op: "sign", slug, version: P.version, name, email, agree: true }) });
+    j = await r.json();
+  } catch { err.textContent = "Connection lost. Nothing was charged. Try again."; busy(false, `Sign and pay ${P.price_text}`); refreshButton(); return; }
+  if (j.state === "paid") return load();
+  if (!r.ok || !j.client_secret) {
+    err.textContent = j.message || "Something went wrong. Nothing was charged. Try again.";
+    if (j.error === "changed") { go.textContent = "Reload the latest version"; go.disabled = false; go.onclick = () => location.reload(); go.classList.remove("busy"); return; }
+    busy(false, `Sign and pay ${P.price_text}`); refreshButton(); return;
+  }
+  busy(true, "Processing payment…");
+  const ret = location.origin + location.pathname;
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements, clientSecret: j.client_secret, redirect: "if_required",
+    confirmParams: { return_url: ret, payment_method_data: { billing_details: { name, email } } },
+  });
+  if (error) { err.textContent = error.message || "The payment did not go through. Nothing was charged."; busy(false, `Sign and pay ${P.price_text}`); refreshButton(); return; }
+  await settle(paymentIntent.id);
+}
+
+async function settle(piId) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    try {
+      const r = await fetch(API, { method: "POST", headers: headers({ "Content-Type": "application/json" }), body: JSON.stringify({ op: "confirm", slug, payment_intent_id: piId }) });
+      const j = await r.json();
+      if (j.state === "paid" && j.proposal) { P = j.proposal; render(); document.getElementById("sign").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+      if (j.state === "processing" || j.state === "open") { await new Promise((res) => setTimeout(res, 1500)); continue; }
+      break;
+    } catch { await new Promise((res) => setTimeout(res, 1500)); }
+  }
+  const err = document.getElementById("err");
+  if (err) err.textContent = "Your payment is being confirmed. You will receive the signed copy by email in a few minutes.";
+}
+
+async function load() {
+  if (!/^[a-z0-9]{12}$/.test(slug)) return stateScreen("This link is not valid.", "Check the link you were sent, or email saad@myoprocess.com.");
+  let r, j;
+  try { r = await fetch(`${API}?op=view&slug=${encodeURIComponent(slug)}`, { headers: headers() }); j = await r.json(); }
+  catch { return stateScreen("This page could not load.", "Check your connection and refresh. If it keeps happening, email saad@myoprocess.com."); }
+  if (r.status === 404) return stateScreen("This link is not valid.", "Check the link you were sent, or email saad@myoprocess.com.");
+  if (!r.ok) return stateScreen("This page could not load.", "Refresh in a moment. If it keeps happening, email saad@myoprocess.com.");
+  P = j.proposal; window.__PK = j.stripe_pk;
+  if (P.status === "void") return stateScreen("This proposal is no longer available.", "Email saad@myoprocess.com if you have questions.");
+  if (j.admin) {
+    const bar = el("div", { class: "adminbar" }, "Your preview · this visit is not counted as an open", el("a", { href: "/access/new", text: "Back to proposals" }));
+    document.body.append(bar);
+  }
+  // Coming back from a bank's verification page: Stripe appends the intent to the return URL.
+  const q = new URLSearchParams(location.search);
+  if (q.get("payment_intent") && P.status === "open") { history.replaceState(null, "", location.pathname); render(); return settle(q.get("payment_intent")); }
+  render();
+}
+
+/* The motion layer from myoprocess.com/index.html, run after the proposal renders. */
+let motionWired = false;
+function motion() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const root = document.documentElement;
+  root.classList.add("motion");
+  document.querySelectorAll(".hero h1").forEach((h1) => {
+    let n = 0;
+    const split = (node) => [...node.childNodes].forEach((c) => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach((t) => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(" ")); return; }
+          const w = document.createElement("span"); w.className = "w"; w.style.setProperty("--i", n++);
+          const inner = document.createElement("span"); inner.textContent = t; w.appendChild(inner); frag.appendChild(w);
+        });
+        node.replaceChild(frag, c);
+      } else if (c.nodeType === 1) split(c);
+    });
+    split(h1);
+  });
+  const ease = (t) => 1 - Math.pow(1 - t, 4);
+  const countUp = (node) => {
+    const m = node.textContent.match(/^([^\d]*)([\d,]+)(.*)$/); if (!m) return;
+    const target = parseInt(m[2].replace(/,/g, ""), 10); if (!(target >= 10)) return;
+    const pre = m[1], post = m[3], dur = 1500, t0 = performance.now(), final = node.textContent;
+    const step = (t) => { const k = Math.min(1, (t - t0) / dur); node.textContent = k < 1 ? pre + Math.round(target * ease(k)).toLocaleString("en-US") + post : final; if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    if (e.target.classList.contains("count")) countUp(e.target); else e.target.classList.add("in");
+    io.unobserve(e.target);
+  }), { threshold: .2 });
+  document.querySelectorAll(".count").forEach((b) => io.observe(b));
+  document.querySelectorAll("main .sec, .sign .wrap > *").forEach((node) => { node.classList.add("reveal"); io.observe(node); });
+  document.querySelectorAll(".gs").forEach((gs) => gs.querySelectorAll(".g").forEach((g, i) => { g.style.setProperty("--i", i); io.observe(g); }));
+  if (fine) {
+    [...document.querySelectorAll(".g, .confirmed")].forEach((node) => {
+      node.classList.add("fxcard");
+      ["spot", "sheen"].forEach((k) => { const f = document.createElement("span"); f.className = "fx " + k; node.appendChild(f); });
+      let raf = 0; const max = node.classList.contains("confirmed") ? 3 : 7;
+      node.addEventListener("mousemove", (e) => {
+        const r = node.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          node.classList.add("tilt");
+          node.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); node.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+          node.style.transform = `perspective(900px) rotateX(${((.5 - y) * max).toFixed(2)}deg) rotateY(${((x - .5) * max).toFixed(2)}deg) translateY(-3px)`;
+        });
+      });
+      node.addEventListener("mouseleave", () => { cancelAnimationFrame(raf); node.classList.remove("tilt"); node.style.transform = ""; });
+      node.addEventListener("mousedown", (e) => {
+        const r = node.getBoundingClientRect(), rp = document.createElement("span"); rp.className = "fx ripple";
+        rp.style.setProperty("--rx", (e.clientX - r.left) + "px"); rp.style.setProperty("--ry", (e.clientY - r.top) + "px");
+        node.appendChild(rp); rp.addEventListener("animationend", () => rp.remove());
+      });
+    });
+  }
+  if (motionWired) return;
+  motionWired = true;
+  const mast = document.querySelector(".mast");
+  const onScroll = () => {
+    const y = scrollY, max = root.scrollHeight - innerHeight;
+    mast.classList.toggle("scrolled", y > 24);
+    mast.style.setProperty("--progress", (max > 0 ? Math.min(100, y / max * 100) : 0) + "%");
+  };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  if (!fine) return;
+  document.querySelectorAll(".u").forEach((a) => {
+    a.classList.add("mag");
+    a.addEventListener("mousemove", (e) => { const r = a.getBoundingClientRect(); a.style.transform = `translate(${((e.clientX - r.left) / r.width - .5) * 6}px, ${((e.clientY - r.top) / r.height - .5) * 6}px)`; });
+    a.addEventListener("mouseleave", () => { a.style.transform = ""; });
+  });
+  const ring = document.querySelector(".cursor");
+  let cx = 0, cy = 0, rx = 0, ry = 0, shown = false;
+  addEventListener("mousemove", (e) => { cx = e.clientX; cy = e.clientY; if (!shown) { shown = true; rx = cx; ry = cy; document.body.classList.add("cursor-on"); } });
+  document.addEventListener("mouseleave", () => { document.body.classList.remove("cursor-on"); shown = false; });
+  addEventListener("mousedown", () => ring.classList.add("is-down")); addEventListener("mouseup", () => ring.classList.remove("is-down"));
+  document.addEventListener("mouseover", (e) => ring.classList.toggle("is-hover", !!e.target.closest("a, button, .g, .confirmed, label.agree")));
+  const loop = () => { rx += (cx - rx) * .22; ry += (cy - ry) * .22; ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`; requestAnimationFrame(loop); };
+  loop();
+}
+
+load();
+</script>
+</body>
+</html>

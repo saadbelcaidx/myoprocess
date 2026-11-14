@@ -1,6 +1,18 @@
 {
   "rewrites": [
     { "source": "/private-help", "destination": "/app.html" },
-    { "source": "/go-skool", "destination": "/app.html" }
+    { "source": "/go-skool", "destination": "/app.html" },
+    { "source": "/access/new", "destination": "/access/new/index.html" },
+    { "source": "/access/:slug", "destination": "/access/view.html" }
+  ],
+  "headers": [
+    {
+      "source": "/access/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
   ]
 }

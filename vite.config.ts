@@ -19,6 +19,12 @@ export default defineConfig({
           const url = req.url.split('?')[0];
           const cleanPath = url.endsWith('/') ? url.slice(0, -1) : url;
           if (APP_ROUTES.has(cleanPath)) { req.url = '/app.html'; return next(); }
+          // /access/<slug> is one static page that reads the slug from the URL (production: vercel.json rewrite).
+          if (/^\/access\/[a-z0-9]{12}$/.test(cleanPath)) {
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            fs.createReadStream(path.join(process.cwd(), 'public', 'access', 'view.html')).pipe(res);
+            return;
+          }
           if (url === '/' || url.startsWith('/@') || url.startsWith('/src/') || url.startsWith('/node_modules')) return next();
           if (path.extname(cleanPath)) return next();
           const candidate = path.join(process.cwd(), 'public', cleanPath, 'index.html');
