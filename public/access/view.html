@@ -120,6 +120,13 @@
 
   .adminbar { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 60; background: rgba(18,18,18,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #f3f1ea; font-size: 13px; padding: 9px 16px; border-radius: 999px; box-shadow: 0 12px 40px -12px rgba(0,0,0,.45); max-width: calc(100% - 32px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .adminbar a { color: #f3f1ea; margin-left: 10px; }
+  /* The seal: a signed proposal opens only with the access code. */
+  .stamp { align-self: flex-start; display: inline-flex; flex-direction: column; align-items: center; gap: 2px; border: 2px solid var(--ox); color: var(--ox); border-radius: 4px; padding: 10px 20px 8px; margin-bottom: 14px; transform: rotate(-3deg); }
+  .stamp b { font: 600 12px var(--mono); letter-spacing: .34em; text-transform: uppercase; padding-left: .34em; }
+  .stamp span { font: 400 22px/1.1 var(--serif); }
+  .stamp em { font-style: italic; }
+  .seal-form { width: 100%; max-width: 360px; margin-top: 10px; }
+  .seal-form .btn { margin-top: 12px; }
 
   footer { border-top: 1px solid var(--rule); padding: 26px 0 96px; font-size: 13px; color: var(--sub); }
   footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -216,9 +223,9 @@
 const API = "https://dqqchgvwqrqnthnbrfkp.supabase.co/functions/v1/access";
 const KEY_STORE = "myo_access_key";
 const slug = (location.pathname.split("/").filter(Boolean)[1] || new URLSearchParams(location.search).get("slug") || "").toLowerCase();
-const adminKey = (() => { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } })();
+let adminKey = (() => { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } })();
 const app = document.getElementById("app");
-let P = null, stripe = null, elements = null;
+let P = null, stripe = null, elements = null, justPaid = false;
 
 const el = (tag, attrs = {}, ...kids) => {
   const n = document.createElement(tag);
@@ -235,6 +242,63 @@ const fmtDate = (iso) => new Date(iso).toLocaleString("en-GB", { day: "numeric",
 function stateScreen(title, line) {
   app.replaceChildren(el("div", { class: "wrap state" }, el("h1", { text: title }), el("p", { text: line })));
   document.title = "myoProcess";
+}
+
+/* A signed proposal is sealed. The server sends nothing but the seal unless the access code comes with the request,
+   so there is nothing on this page to uncover. */
+const stamp = () => el("div", { class: "stamp", "aria-hidden": "true" }, el("b", { text: "Confidential" }), el("span", {}, el("em", { text: "m" }), "yoProcess"));
+
+function sealScreen() {
+  const code = el("input", { class: "t", id: "code", type: "password", autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
+  const go = el("button", { class: "btn", type: "submit", text: "Open" });
+  const err = el("p", { class: "err", role: "alert" });
+  const form = el("form", { class: "seal-form" }, el("label", { class: "f", for: "code", text: "Access code" }), code, go, err);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const k = code.value.trim();
+    err.textContent = "";
+    if (!k) return;
+    go.disabled = true; go.classList.add("busy");
+    try {
+      const r = await fetch(`${API}?op=view&slug=${encodeURIComponent(slug)}`, { headers: { "x-access-key": k } });
+      const j = await r.json();
+      if (r.ok && j.admin) {
+        adminKey = k;
+        try { localStorage.setItem(KEY_STORE, k); } catch { /* private window: this visit only */ }
+        return load();
+      }
+      err.textContent = "That code did not work.";
+    } catch { err.textContent = "Connection lost. Try again."; }
+    go.disabled = false; go.classList.remove("busy");
+  });
+  app.replaceChildren(el("div", { class: "wrap state" }, stamp(),
+    el("h1", { text: "This proposal is sealed." }),
+    el("p", { text: "A signed myoProcess proposal opens only with an access code. The signed copy was emailed when it was signed." }),
+    form));
+  document.title = "myoProcess · Confidential";
+}
+
+function paidScreen() {
+  app.replaceChildren(el("div", { class: "wrap state" }, stamp(),
+    el("h1", { text: "Signed and paid." }),
+    el("p", { text: "Thank you. Your signed copy is on its way to your inbox. This proposal is now sealed." })));
+  document.title = "myoProcess · Signed";
+  scrollTo({ top: 0 });
+}
+
+async function downloadPdf(a) {
+  const label = a.textContent;
+  a.textContent = "Preparing the PDF…";
+  try {
+    const r = await fetch(`${API}?op=pdf&slug=${encodeURIComponent(slug)}`, { headers: headers() });
+    if (!r.ok) throw new Error();
+    const url = URL.createObjectURL(await r.blob());
+    const name = (/filename="([^"]+)"/.exec(r.headers.get("content-disposition") || "") || [])[1] || "signed-proposal.pdf";
+    const link = el("a", { href: url, download: name });
+    document.body.append(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    a.textContent = label;
+  } catch { a.textContent = "The PDF could not download. Try again."; }
 }
 
 function renderBlocks(blocks) {
@@ -313,9 +377,10 @@ function signSection(n) {
     el("p", { class: "lede", text: paid ? "This agreement is complete. The signed copy was emailed to both parties." : "Type your name to sign. Your signature and payment complete the agreement, and a signed copy is emailed to you and to myoProcess." }),
     grid);
   if (paid) {
+    const dl = el("a", { class: "dl", href: "#", text: "Download the signed PDF" });
+    dl.addEventListener("click", (e) => { e.preventDefault(); downloadPdf(dl); });
     wrap.append(el("div", { class: "done" }, el("b", { text: "Agreement signed." }),
-      el("p", { text: `Signed by ${P.signed.name} on ${fmtDate(P.signed.at)}. Payment of ${P.signed.paid_text} received.` }),
-      el("a", { class: "dl", href: `${API}?op=pdf&slug=${encodeURIComponent(slug)}`, text: "Download the signed PDF" })));
+      el("p", { text: `Signed by ${P.signed.name} on ${fmtDate(P.signed.at)}. Payment of ${P.signed.paid_text} received.` }), dl));
   } else {
     wrap.append(
       el("label", { class: "agree" }, el("input", { type: "checkbox", id: "ok" }), el("span", { text: `I have read this proposal and agree to its terms on behalf of ${P.company}.` })),
@@ -376,7 +441,7 @@ async function signAndPay() {
     r = await fetch(API, { method: "POST", headers: headers({ "Content-Type": "application/json" }), body: JSON.stringify({ op: "sign", slug, version: P.version, name, email, agree: true }) });
     j = await r.json();
   } catch { err.textContent = "Connection lost. Nothing was charged. Try again."; busy(false, `Sign and pay ${P.price_text}`); refreshButton(); return; }
-  if (j.state === "paid") return load();
+  if (j.state === "paid") { justPaid = true; return load(); }
   if (!r.ok || !j.client_secret) {
     err.textContent = j.message || "Something went wrong. Nothing was charged. Try again.";
     if (j.error === "changed") { go.textContent = "Reload the latest version"; go.disabled = false; go.onclick = () => location.reload(); go.classList.remove("busy"); return; }
@@ -397,7 +462,10 @@ async function settle(piId) {
     try {
       const r = await fetch(API, { method: "POST", headers: headers({ "Content-Type": "application/json" }), body: JSON.stringify({ op: "confirm", slug, payment_intent_id: piId }) });
       const j = await r.json();
-      if (j.state === "paid" && j.proposal) { P = j.proposal; render(); document.getElementById("sign").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+      if (j.state === "paid" && j.proposal) {
+        if (j.proposal.sealed) return paidScreen();
+        P = j.proposal; render(); document.getElementById("sign").scrollIntoView({ behavior: "smooth", block: "start" }); return;
+      }
       if (j.state === "processing" || j.state === "open") { await new Promise((res) => setTimeout(res, 1500)); continue; }
       break;
     } catch { await new Promise((res) => setTimeout(res, 1500)); }
@@ -414,13 +482,18 @@ async function load() {
   if (r.status === 404) return stateScreen("This link is not valid.", "Check the link you were sent, or email saad@myoprocess.com.");
   if (!r.ok) return stateScreen("This page could not load.", "Refresh in a moment. If it keeps happening, email saad@myoprocess.com.");
   P = j.proposal; window.__PK = j.stripe_pk;
+  const q = new URLSearchParams(location.search);
+  if (P.sealed) {
+    // Just paid here (or back from a bank's page after the payment landed): thank them. Anyone else: the seal.
+    if (justPaid || q.get("payment_intent")) { history.replaceState(null, "", location.pathname); return paidScreen(); }
+    return sealScreen();
+  }
   if (P.status === "void") return stateScreen("This proposal is no longer available.", "Email saad@myoprocess.com if you have questions.");
   if (j.admin) {
     const bar = el("div", { class: "adminbar" }, "Your preview · this visit is not counted as an open", el("a", { href: "/access/new", text: "Back to proposals" }));
     document.body.append(bar);
   }
   // Coming back from a bank's verification page: Stripe appends the intent to the return URL.
-  const q = new URLSearchParams(location.search);
   if (q.get("payment_intent") && P.status === "open") { history.replaceState(null, "", location.pathname); render(); return settle(q.get("payment_intent")); }
   render();
 }
