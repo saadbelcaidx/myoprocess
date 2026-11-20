@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
-<script src="https://js.stripe.com/endive/stripe.js" async></script>
 <style>
   :root {
     --paper: #faf9f5; --paper-2: #ffffff;
@@ -223,7 +222,7 @@
 const API = "https://dqqchgvwqrqnthnbrfkp.supabase.co/functions/v1/access";
 const KEY_STORE = "myo_access_key";
 const slug = (location.pathname.split("/").filter(Boolean)[1] || new URLSearchParams(location.search).get("slug") || "").toLowerCase();
-let adminKey = (() => { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } })();
+let adminKey = (() => { try { return localStorage.getItem(KEY_STORE) || sessionStorage.getItem(KEY_STORE) || ""; } catch { return ""; } })();
 const app = document.getElementById("app");
 let P = null, stripe = null, elements = null, justPaid = false;
 
@@ -264,7 +263,8 @@ function sealScreen() {
       const j = await r.json();
       if (r.ok && j.admin) {
         adminKey = k;
-        try { localStorage.setItem(KEY_STORE, k); } catch { /* private window: this visit only */ }
+        // This tab only: a code typed on someone else's computer is gone when the tab closes.
+        try { sessionStorage.setItem(KEY_STORE, k); } catch { /* private window: this visit only */ }
         return load();
       }
       err.textContent = "That code did not work.";
@@ -394,6 +394,19 @@ function signSection(n) {
   return el("section", { class: "sign", id: "sign" }, wrap);
 }
 
+/* Stripe's script loads only when there is something to pay: a sealed or withdrawn proposal runs no outside code
+   beside the access code. */
+function loadStripe() {
+  if (window.Stripe) return Promise.resolve(true);
+  return new Promise((res) => {
+    const s = document.createElement("script");
+    s.src = "https://js.stripe.com/endive/stripe.js"; s.async = true;
+    s.onload = () => res(!!window.Stripe); s.onerror = () => res(false);
+    document.head.append(s);
+    setTimeout(() => res(!!window.Stripe), 15000);
+  });
+}
+
 let cardComplete = false;
 function refreshButton() {
   const nm = document.getElementById("nm"), em = document.getElementById("em"), ok = document.getElementById("ok"), go = document.getElementById("go"), out = document.getElementById("sigOut");
@@ -409,7 +422,7 @@ async function mountPayment() {
   document.getElementById("ok").addEventListener("change", refreshButton);
   const err = document.getElementById("err");
   const pk = window.__PK;
-  for (let i = 0; i < 50 && !window.Stripe; i++) await new Promise((r) => setTimeout(r, 100));
+  await loadStripe();
   if (!window.Stripe || !pk) { err.textContent = "The card form could not load. Email saad@myoprocess.com and we will send you a payment link."; return; }
   stripe = window.Stripe(pk);
   elements = stripe.elements({
@@ -466,6 +479,7 @@ async function settle(piId) {
         if (j.proposal.sealed) return paidScreen();
         P = j.proposal; render(); document.getElementById("sign").scrollIntoView({ behavior: "smooth", block: "start" }); return;
       }
+      if (j.state === "void") return stateScreen("This proposal was withdrawn.", "Your payment will be refunded. Email saad@myoprocess.com if you have questions.");
       if (j.state === "processing" || j.state === "open") { await new Promise((res) => setTimeout(res, 1500)); continue; }
       break;
     } catch { await new Promise((res) => setTimeout(res, 1500)); }
